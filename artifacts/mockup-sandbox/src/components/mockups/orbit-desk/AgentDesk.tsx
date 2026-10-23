@@ -11,7 +11,6 @@ import {
   Headphones,
   Mail,
   MessageCircle,
-  MoreHorizontal,
   Paperclip,
   Phone,
   Search,
@@ -143,7 +142,7 @@ export function AgentDesk() {
   };
 
   return (
-    <div className="orbit-desk">
+    <div className="orbit-desk" data-idle={idleTone(elapsed[activeId])}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
@@ -348,8 +347,15 @@ export function AgentDesk() {
         .conversation-tab.selected::before { content:none; }
         /* Chrome-style shoulders: the selected silhouette opens into the chat,
            rather than drawing a closed rectangular outline around the tab. */
-        .orbit-desk { --chrome-surface:#302e4c; }
+        .orbit-desk { --chrome-surface:#2c3b43; --active-led:#74e9ad; }
+        .orbit-desk[data-idle="warning"] { --chrome-surface:#413b38; --active-led:#ffd263; }
+        .orbit-desk[data-idle="critical"] { --chrome-surface:#42313f; --active-led:#ff7482; }
         .tabs-row { padding:8px 0 0;border-bottom:0;overflow:visible; }
+        .tabs-row::after {
+          content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
+          background:var(--active-led);pointer-events:none;z-index:0;
+          box-shadow:0 0 5px var(--active-led),0 0 13px color-mix(in srgb,var(--active-led) 42%,transparent);
+        }
         .tabs-row .conversation-tab {
           height:48px;padding:7px 24px;isolation:isolate;
           border:0;border-radius:0;background:none;box-shadow:none;
@@ -379,7 +385,10 @@ export function AgentDesk() {
         .conversation-tab.incoming .chrome-tab-fill { fill:rgba(57,151,112,.14); }
         .conversation-tab.incoming .chrome-tab-edge { animation:incomingPulse 1.8s ease-in-out infinite; }
         .chat-panel { border-top:0 !important; }
-        .chat-heading { background:var(--chrome-surface); }
+        .chat-panel .chat-heading {
+          height:44px;min-height:44px;padding:0 22px;justify-content:flex-end;
+          background:var(--chrome-surface);
+        }
         @media (prefers-reduced-motion:reduce) {
           .conversation-tab.incoming .chrome-tab-edge { animation:none;opacity:.85; }
         }
@@ -528,13 +537,8 @@ export function AgentDesk() {
         <main className="workspace">
           <section className="chat-panel" aria-label={`Conversación con ${activeChat.name}`}>
             <div className="chat-heading">
-              <div className="customer-heading">
-                <div className="large-avatar">{activeChat.initials}</div>
-                <div><div className="customer-name">{activeChat.name}</div><div className="online"><i />En línea · Chat en vivo</div></div>
-              </div>
               <div className="chat-controls">
-                <button className="icon-button" title="Más opciones" type="button"><MoreHorizontal size={18} /></button>
-                <button className="resolve-button" type="button" onClick={() => { setOpenIds((ids) => ids.filter((id) => id !== activeId)); const other = openIds.find((id) => id !== activeId); if (other) setActiveId(other); }}><Check size={14} />Resolver</button>
+                <button className="resolve-button" type="button" onClick={() => { setOpenIds((ids) => ids.filter((id) => id !== activeId)); const other = openIds.find((id) => id !== activeId); if (other) setActiveId(other); }}><X size={13} />End chat</button>
               </div>
             </div>
             <div className="chat-context">

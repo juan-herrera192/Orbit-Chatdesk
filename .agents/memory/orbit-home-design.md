@@ -11,7 +11,7 @@ Orbit Home is a call-center workspace for agents handling up to two concurrent c
 
 Conversation tabs must resemble Google Chrome tabs, including the active tab joining the chat panel and the transition when switching customers. Separate rounded cards or rectangles merely touching each other did not satisfy the user, who corrected this repeatedly.
 
-**Why:** The user wants an integrated browser-tab appearance, not floating conversation buttons.
+**Why:** The user wants an integrated browser-tab appearance, not floating conversation buttons. They confirmed “está mejor” for the curved lower shoulders and active tab merging into the chat header; preserve that direction.
 
 **How to apply:** Judge the rendered silhouette and its connection to the chat surface, not just whether the CSS gap is zero. Preserve the idle-color indicators and the new-chat green pulse.
 
