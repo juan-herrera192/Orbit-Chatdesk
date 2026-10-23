@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/"
+title = "Orbit Home · Chat Support"
+description = "Plataforma de atención con dos chats simultáneos por agente, notas, clasificación, métricas y base de conocimiento."
+version = "1.0.0"
+id = "artifacts/orbit-home"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 23027
+
+[services.development]
+run = "pnpm --filter @workspace/orbit-home run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/orbit-home", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/orbit-home/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "23027"
+BASE_PATH = "/"

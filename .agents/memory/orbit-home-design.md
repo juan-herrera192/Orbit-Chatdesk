@@ -3,11 +3,11 @@ name: Orbit Home design direction
 description: Product scope and visual requirements that should guide future design iterations.
 ---
 
-Orbit Home is a call-center workspace for agents handling up to two concurrent chats. The user requested only the exterior design, not live-chat infrastructure.
+Orbit Home is a call-center workspace for agents handling up to two concurrent chats. The user originally requested only a visual prototype, then explicitly requested a new fully functional artifact from the selected canvas design.
 
-**Why:** The user explicitly limited this phase to a visual prototype.
+**Why:** The functional-app request supersedes the original visual-only scope.
 
-**How to apply:** Keep design iterations in the mockup unless the user asks to implement the functional product.
+**How to apply:** Keep the canvas reference intact; implement product functionality in the separate application artifact.
 
 The user now wants only the left conversation list, without top browser tabs or their horizontal divider.
 

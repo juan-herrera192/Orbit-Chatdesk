@@ -1,1 +1,1 @@
-- [Orbit Home design direction](orbit-home-design.md) — Visual-only scope; solid styling and left conversation indicators replace glass and browser tabs.
+- [Orbit Home design direction](orbit-home-design.md) — Functional graduation supersedes prototype-only scope; preserve solid styling and left conversation indicators.

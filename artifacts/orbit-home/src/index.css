@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+@layer theme, base, clerk, components, utilities;
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@custom-variant dark (&:is(.dark *));
+@theme inline {
+  --color-background:hsl(var(--background)); --color-foreground:hsl(var(--foreground));
+  --color-border:hsl(var(--border)); --color-primary:hsl(var(--primary));
+  --color-primary-foreground:hsl(var(--primary-foreground)); --color-muted:hsl(var(--muted));
+  --color-muted-foreground:hsl(var(--muted-foreground)); --color-input:hsl(var(--input));
+  --color-ring:hsl(var(--ring)); --color-card:hsl(var(--card));
+  --color-card-foreground:hsl(var(--foreground)); --color-popover:hsl(var(--card));
+  --color-popover-foreground:hsl(var(--foreground)); --color-secondary:hsl(var(--secondary));
+  --color-secondary-foreground:hsl(var(--foreground)); --color-accent:hsl(var(--secondary));
+  --color-accent-foreground:hsl(var(--foreground)); --color-destructive:hsl(var(--destructive));
+  --font-sans:'DM Sans',sans-serif; --radius:12px;
+}
+:root,.dark {
+  --background:214 61% 16%; --foreground:40 48% 94%; --border:209 26% 31%;
+  --card:210 39% 23%; --primary:39 48% 57%; --primary-foreground:214 61% 16%;
+  --secondary:210 39% 23%; --muted:210 25% 25%; --muted-foreground:212 12% 75%;
+  --input:209 26% 39%; --ring:39 48% 57%; --destructive:350 64% 68%;
+}
+*{box-sizing:border-box}body{margin:0;background:#102542;color:#f7f2e8;font-family:'DM Sans',sans-serif}button,input,textarea,select{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}a{color:inherit}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:2px solid #c6a15b;outline-offset:3px}
+.cl-formFieldInput::placeholder{color:#adb8c4;opacity:1}
