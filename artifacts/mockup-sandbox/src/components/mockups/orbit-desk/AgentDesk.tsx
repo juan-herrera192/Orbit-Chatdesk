@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   ArrowUpRight,
   BookOpen,
@@ -142,11 +142,6 @@ export function AgentDesk() {
     window.setTimeout(() => setSentState(false), 1500);
   };
 
-  const timerStatus = useMemo(() => {
-    const seconds = elapsed[activeId];
-    return idleTone(seconds);
-  }, [elapsed, activeId]);
-
   return (
     <div className="orbit-desk">
       <style>{`
@@ -157,9 +152,9 @@ export function AgentDesk() {
           min-height: 100dvh; padding: 22px 26px 26px; color: var(--ink);
           font-family: 'DM Sans', sans-serif;
           background:
-            radial-gradient(ellipse at 9% 2%, rgba(255,255,255,.92), transparent 35%),
-            radial-gradient(ellipse at 88% 88%, rgba(187,220,239,.65), transparent 35%),
-            linear-gradient(135deg,#dceefa 0%,#e8f3fa 45%,#dcecf6 100%);
+            radial-gradient(ellipse at 10% 4%, rgba(248,253,255,.86), transparent 34%),
+            radial-gradient(ellipse at 86% 88%, rgba(158,207,235,.54), transparent 36%),
+            linear-gradient(132deg,#cfe7f5 0%,#dceefa 46%,#c9e2f2 100%);
         }
         .orbit-shell { width: min(1500px,100%); min-height: calc(100dvh - 48px); margin: 0 auto; display:flex; flex-direction:column; }
         .topbar { height:58px; display:flex; align-items:center; justify-content:space-between; padding:0 6px 15px; }
@@ -173,27 +168,32 @@ export function AgentDesk() {
         .profile-copy { text-align:right; line-height:1.25; font-size:11px; font-weight:700; }
         .profile-copy span { display:block; color:#91a4b3; font-size:10px; font-weight:500; margin-top:2px; }
         .avatar { width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#d8ede8;color:#397c70;font-size:11px;font-weight:700;border:2px solid rgba(255,255,255,.84); }
-        .tabs-row { display:flex; align-items:stretch; gap:9px; padding:0 2px; min-height:68px; }
-        .conversation-tab { position:relative; display:flex; align-items:center; gap:11px; width:264px; min-width:0; border:1px solid rgba(117,151,176,.20); border-bottom-color:rgba(117,151,176,.26); background:rgba(255,255,255,.38); padding:10px 12px; border-radius:15px 15px 0 0; text-align:left; cursor:pointer; color:#6f899d; transition:all .2s; }
-        .conversation-tab.selected { background:rgba(255,255,255,.87); color:#304b5e; border-color:rgba(255,255,255,.94); box-shadow:0 -1px 0 rgba(255,255,255,.6), 0 6px 16px rgba(66,119,150,.06); }
-        .conversation-tab.incoming { border-color:rgba(57,174,117,.38); background:rgba(244,255,249,.66); }
-        .conversation-tab.incoming::after { content:"";position:absolute;inset:0;border-radius:15px 15px 0 0;border:1px solid rgba(62,190,126,.25);pointer-events:none;animation:incomingPulse 1.8s ease-in-out infinite; }
+        .tabs-row { display:flex; align-items:center; gap:11px; padding:0 2px 10px; min-height:66px; }
+        .conversation-tab { position:relative; display:flex; align-items:center; gap:11px; width:294px; height:52px; min-width:0; border:1px solid rgba(117,151,176,.28); background:rgba(238,248,254,.57); backdrop-filter:blur(18px); padding:7px 12px; border-radius:15px; text-align:left; cursor:pointer; color:#6f899d; transition:background .22s,border-color .22s,box-shadow .22s,transform .22s; }
+        .conversation-tab:hover { transform:translateY(-1px); }
+        .conversation-tab.selected { background:rgba(250,253,255,.76); color:#304b5e; }
+        .conversation-tab.edge-healthy { border-color:rgba(58,184,123,.72); box-shadow:0 0 0 1px rgba(68,196,134,.22),0 0 15px rgba(68,196,134,.16); }
+        .conversation-tab.edge-warning { border-color:rgba(229,176,65,.84); box-shadow:0 0 0 1px rgba(238,188,78,.26),0 0 17px rgba(238,188,78,.25); }
+        .conversation-tab.edge-critical { border-color:rgba(223,100,94,.9); box-shadow:0 0 0 1px rgba(223,100,94,.28),0 0 18px rgba(223,100,94,.29); }
+        .conversation-tab.incoming { border-color:rgba(57,174,117,.64); background:rgba(237,255,245,.76); box-shadow:0 0 0 1px rgba(62,190,126,.22),0 0 18px rgba(62,190,126,.24); }
+        .conversation-tab.incoming::after { content:"";position:absolute;inset:-1px;border-radius:15px;border:1px solid rgba(62,190,126,.72);box-shadow:0 0 16px rgba(62,190,126,.38);pointer-events:none;animation:incomingPulse 1.8s ease-in-out infinite; }
         @keyframes incomingPulse { 0%,100%{opacity:.2} 50%{opacity:.95} }
-        .tab-avatar { flex:none; width:34px;height:34px;border-radius:12px;display:grid;place-items:center;background:#e5e0f7;color:#766ca1;font-size:11px;font-weight:700; }
+        .tab-avatar { flex:none; width:31px;height:31px;border-radius:11px;display:grid;place-items:center;background:#e5e0f7;color:#766ca1;font-size:11px;font-weight:700; }
         .tab-main { min-width:0; flex:1; }
-        .tab-name { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:#40596b; white-space:nowrap; }
-        .tab-sub { margin-top:4px; color:#91a3b1; font-size:10px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+        .tab-name { display:flex; align-items:center; gap:7px; font-size:12px; font-weight:700; color:#40596b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
         .tab-meta { display:flex; flex-direction:column; align-items:flex-end; gap:5px; }
-        .idle { display:flex; align-items:center; gap:5px; font:600 10px ui-monospace,SFMono-Regular,monospace; color:#3e9c70; }
+        .idle { display:flex; align-items:center; gap:6px; padding:5px 7px; border-radius:8px; background:rgba(230,248,238,.72); font:700 10px ui-monospace,SFMono-Regular,monospace; color:#378d65; }
         .idle.warning { color:#c19132; } .idle.critical { color:#c45b56; }
+        .idle.warning { background:rgba(255,246,223,.84); }
+        .idle.critical { background:rgba(255,235,232,.88); }
         .idle-dot { width:7px;height:7px;border-radius:50%;background:#52bd84; box-shadow:0 0 0 3px rgba(82,189,132,.12); }
         .warning .idle-dot { background:#e4b751; box-shadow:0 0 0 3px rgba(228,183,81,.12); }
         .critical .idle-dot { background:#de6b64; box-shadow:0 0 0 3px rgba(222,107,100,.12); }
-        .new-badge { color:#268c5c; background:#dff6e9; border-radius:5px; padding:3px 6px; text-transform:uppercase; letter-spacing:.7px; font-size:8px; font-weight:800; }
+        .new-badge { color:#268c5c; background:#dff6e9; border-radius:6px; padding:5px 7px; text-transform:uppercase; letter-spacing:.7px; font-size:8px; font-weight:800; }
         .close-tab { border:0;background:transparent;color:#a1b1bc;padding:4px;display:grid;place-items:center;border-radius:6px;cursor:pointer; }
         .close-tab:hover { background:#edf2f5;color:#557085; }
-        .workspace { flex:1; min-height:650px; display:grid; grid-template-columns:minmax(0,1fr) 346px; overflow:hidden; border:1px solid rgba(255,255,255,.88); border-radius:0 17px 17px 17px; background:rgba(255,255,255,.58); box-shadow:0 18px 48px rgba(55,104,132,.11),0 2px 9px rgba(55,104,132,.04); backdrop-filter:blur(24px); }
-        .chat-panel { min-width:0; display:flex; flex-direction:column; background:rgba(249,252,254,.72); border-right:1px solid var(--line); }
+        .workspace { flex:1; min-height:650px; display:grid; grid-template-columns:minmax(0,1fr) 346px; gap:17px; overflow:visible; background:transparent; }
+        .chat-panel { min-width:0; display:flex; flex-direction:column; border:1px solid rgba(255,255,255,.78); border-radius:21px; background:rgba(243,250,255,.68); box-shadow:0 17px 42px rgba(55,104,132,.12),0 2px 9px rgba(55,104,132,.05); backdrop-filter:blur(26px); overflow:hidden; }
         .chat-heading { height:76px; padding:0 25px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(109,145,167,.12); }
         .customer-heading { display:flex;align-items:center;gap:12px; }
         .large-avatar { width:38px;height:38px;border-radius:14px;display:grid;place-items:center;background:#e7e1f8;color:#786fa5;font-size:12px;font-weight:700; }
@@ -226,7 +226,7 @@ export function AgentDesk() {
         .send-button:hover { background:#1f7180;transform:translateY(-1px); }
         .send-button.sent { background:#4b9e78; }
         .composer-hint { margin:7px 4px 0;color:#a2b1bc;font-size:9px; }
-        .side-panel { min-width:0; display:flex;flex-direction:column;background:rgba(255,255,255,.48); }
+        .side-panel { min-width:0; display:flex;flex-direction:column;border:1px solid rgba(255,255,255,.8);border-radius:21px;background:rgba(238,248,254,.64);box-shadow:0 17px 42px rgba(55,104,132,.1),0 2px 9px rgba(55,104,132,.04);backdrop-filter:blur(26px);overflow:hidden; }
         .side-top { display:flex;align-items:center;justify-content:space-between;padding:19px 20px 14px; }
         .side-title { font:800 10px Manrope,sans-serif;color:#7690a2;text-transform:uppercase;letter-spacing:1.5px; }
         .order-chip { font:700 10px ui-monospace,monospace;color:#7b8fa0;background:#f0f5f7;border:1px solid #e6edef;border-radius:7px;padding:5px 7px; }
@@ -237,6 +237,9 @@ export function AgentDesk() {
         .side-content { padding:20px 20px;overflow:auto; }
         .section-kicker { color:#a3b2bd;text-transform:uppercase;letter-spacing:1.2px;font-size:9px;font-weight:700;margin-bottom:14px; }
         .profile-card { padding:15px;border-radius:14px;background:linear-gradient(140deg,rgba(240,248,250,.92),rgba(248,247,253,.92));border:1px solid rgba(135,162,180,.12);margin-bottom:20px; }
+        .reason-card { margin:-5px 0 21px;padding:12px 13px;border:1px solid rgba(132,164,185,.16);border-radius:12px;background:rgba(233,245,251,.62); }
+        .reason-label { display:block;margin-bottom:5px;color:#91a6b5;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.75px; }
+        .reason-copy { color:#536e80;font-size:10px;line-height:1.5; }
         .profile-card-head { display:flex;align-items:center;gap:11px;margin-bottom:15px; }
         .profile-card .large-avatar { width:42px;height:42px; }
         .customer-tier { font-size:10px;color:#91a2ae;margin-top:4px; }
@@ -268,20 +271,20 @@ export function AgentDesk() {
         .new-convo-note { display:flex;align-items:center;gap:7px;margin-top:14px;color:#88a294;font-size:9px; }
         @media (max-width: 900px) {
           .orbit-desk { padding:14px; }
-          .workspace { grid-template-columns:minmax(0,1fr) 300px; }
-          .conversation-tab { width:min(250px,48vw); }
+          .workspace { grid-template-columns:minmax(0,1fr) 300px; gap:12px; }
+          .conversation-tab { width:min(294px,48vw); }
         }
         @media (max-width: 700px) {
           .orbit-desk { padding:12px; }
           .orbit-shell { min-height:calc(100dvh - 24px); }
           .brand-caption,.profile-copy,.kb-button span { display:none; }
           .topbar { height:52px;padding-bottom:10px; }
-          .tabs-row { min-height:63px;gap:6px;overflow:auto; }
-          .conversation-tab { width:calc(50vw - 18px);min-width:190px;padding:8px;gap:7px; }
+          .tabs-row { min-height:60px;gap:7px;overflow:auto; }
+          .conversation-tab { width:calc(50vw - 18px);height:50px;min-width:190px;padding:7px 9px;gap:7px; }
           .tab-sub { max-width:90px; }
-          .workspace { min-height:calc(100dvh - 139px);display:flex;flex-direction:column;border-radius:0 14px 14px 14px;overflow:visible; }
-          .chat-panel { min-height:540px;border-right:0; }
-          .side-panel { border-top:1px solid var(--line);min-height:310px; }
+          .workspace { min-height:calc(100dvh - 139px);display:flex;flex-direction:column;gap:12px;overflow:visible; }
+          .chat-panel { min-height:540px; }
+          .side-panel { min-height:310px; }
           .chat-heading { padding:0 14px;height:68px; }
           .messages { padding:16px 14px; }
           .message-line { max-width:92%; }
@@ -320,14 +323,13 @@ export function AgentDesk() {
               <button
                 type="button"
                 key={id}
-                className={`conversation-tab ${isActive ? "selected" : ""} ${isNew ? "incoming" : ""}`}
+                className={`conversation-tab ${started[id] ? `edge-${tone}` : ""} ${isActive ? "selected" : ""} ${isNew ? "incoming" : ""}`}
                 onClick={() => selectChat(id)}
                 aria-pressed={isActive}
               >
                 <span className="tab-avatar">{chat.initials}</span>
                 <span className="tab-main">
-                  <span className="tab-name">{chat.name}{isNew && <span className="new-badge">Nueva</span>}</span>
-                  <span className="tab-sub">{isNew ? "Nueva conversación entrante" : chat.intro}</span>
+                  <span className="tab-name">{chat.name}</span>
                 </span>
                 <span className="tab-meta">
                   {started[id] ? <span className={`idle ${tone}`}><i className="idle-dot" />{formatTime(elapsed[id])}</span> : <span className="new-badge">Nuevo</span>}
@@ -396,6 +398,10 @@ export function AgentDesk() {
                       <div className="info-item wide"><label>Teléfono</label><span>{activeChat.phone}</span></div>
                       <div className="info-item wide"><label>Correo electrónico</label><span>{activeChat.email}</span></div>
                     </div>
+                  </div>
+                  <div className="reason-card">
+                    <span className="reason-label">Motivo de consulta</span>
+                    <div className="reason-copy">{activeChat.intro}</div>
                   </div>
                   <div className="section-kicker">Relación con Orbit</div>
                   <div className="summary-status"><i />{activeChat.tenure}</div>
