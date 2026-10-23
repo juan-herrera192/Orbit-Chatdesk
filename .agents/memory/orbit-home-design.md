@@ -15,8 +15,8 @@ Conversation tabs must resemble Google Chrome tabs, including the active tab joi
 
 **How to apply:** Judge the rendered silhouette and its connection to the chat surface, not just whether the CSS gap is zero. Preserve the idle-color indicators and the new-chat green pulse.
 
-The user requested approximately 60% chat and 40% customer information, notes, and tracking, with separate main panels. After exploring a light Lark reference, the user requested a darker design again.
+The latest reference request supersedes the earlier 60/40 split: left navigation, a wide chat area, and a narrower customer panel. The user returned to a darker design after exploring a light Lark reference.
 
 **Why:** These are explicit layout and appearance requirements.
 
-**How to apply:** Preserve these proportions and integrated tabs. Follow the latest dark reference direction rather than treating the light Lark exploration as a standing requirement.
+**How to apply:** Preserve integrated conversation tabs and follow the latest reference proportions, not the old 60/40 split. The requested navigation is Dashboard (monthly NPS, chats handled, first call resolution, closed ticket rate), Contactos (Supervisor, Manager, QA, HR), Conversations, and KB at the bottom. Header says Chat Support with Orbit Home beneath it and a notification bell, without a search bar.

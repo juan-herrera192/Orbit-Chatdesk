@@ -1,7 +1,10 @@
 import "./AgentDesk.css";
 import { useEffect, useState, type CSSProperties } from "react";
 import {
-  ArrowUpRight,
+  Bell,
+  BarChart3,
+  LayoutDashboard,
+  Users,
   BookOpen,
   Box,
   Check,
@@ -10,10 +13,8 @@ import {
   Clock3,
   FileText,
   Headphones,
-  Mail,
   MessageCircle,
   Paperclip,
-  Phone,
   Search,
   Send,
   Sparkles,
@@ -70,6 +71,12 @@ const initialMessages: Record<ChatId, { from: "customer" | "agent"; text: string
   ],
 };
 
+const articles = [
+  { title: "Consultar el estado de un pedido", category: "Pedidos y entregas", body: "Confirma el número de pedido y el correo del cliente en la pestaña Info. Abre Seguimiento e introduce el número de pedido. Si el transportista aún no publica movimientos, informa al cliente que el envío está pendiente de actualización; no confirmes una fecha sin información verificada." },
+  { title: "Montaje de la lámpara Luna", category: "Guías de producto", body: "Desconecta la lámpara antes de comenzar. Coloca la base en una superficie plana, fija el soporte y orienta la abertura de la pantalla hacia abajo. Consulta la guía del modelo OH-LUNA-01 y solicita una fotografía si las piezas no coinciden." },
+  { title: "Cambios y devoluciones", category: "Políticas de atención", body: "Verifica la fecha de compra y el estado del producto. Registra el motivo de la solicitud en Disposición y notas. Antes de ofrecer un cambio o reembolso, valida la elegibilidad con tu supervisor y comparte con el cliente los siguientes pasos confirmados." },
+];
+
 function formatTime(seconds: number) {
   const min = Math.floor(seconds / 60).toString().padStart(2, "0");
   const sec = (seconds % 60).toString().padStart(2, "0");
@@ -83,6 +90,17 @@ function idleTone(seconds: number) {
 }
 
 export function AgentDesk() {
+  const [page, setPage] = useState<"conversations" | "dashboard" | "contacts">(() => {
+    const view = new URLSearchParams(window.location.search).get("view");
+    return view === "dashboard" || view === "contacts" ? view : "conversations";
+  });
+  const [modal, setModal] = useState<"kb" | "notifications" | "contact" | null>(null);
+  const [kbSearch, setKbSearch] = useState("");
+  const [articleIndex, setArticleIndex] = useState<number | null>(null);
+  const [contactRole, setContactRole] = useState("");
+  const [contactMessage, setContactMessage] = useState("");
+  const [contactSent, setContactSent] = useState(false);
+  const [attachment, setAttachment] = useState("");
   const [activeId, setActiveId] = useState<ChatId>("jordan");
   const [openIds, setOpenIds] = useState<ChatId[]>(["jordan", "sofia"]);
   const [started, setStarted] = useState<Record<ChatId, boolean>>({ jordan: true, sofia: false });
@@ -134,10 +152,12 @@ export function AgentDesk() {
 
   const sendMessage = () => {
     const text = draft.trim();
-    if (!text) return;
+    if ((!text && !attachment) || !openIds.length) return;
     const stamp = new Intl.DateTimeFormat("es", { hour: "2-digit", minute: "2-digit" }).format(new Date());
-    setMessages((current) => ({ ...current, [activeId]: [...current[activeId], { from: "agent", text, time: stamp }] }));
+    setMessages((current) => ({ ...current, [activeId]: [...current[activeId], { from: "agent", text: `${text}${attachment ? `${text ? "\n" : ""}Archivo adjunto: ${attachment}` : ""}`, time: stamp }] }));
     setDraft("");
+    setAttachment("");
+    setElapsed((current) => ({ ...current, [activeId]: 0 }));
     setSentState(true);
     window.setTimeout(() => setSentState(false), 1500);
   };
@@ -502,15 +522,20 @@ export function AgentDesk() {
         }
       `}</style>
       <div className="orbit-shell">
+        <aside className="app-sidebar" aria-label="Navegación principal">
+          <div className="sidebar-logo" title="Orbit Home"><Headphones size={24} /></div>
+          <nav className="sidebar-nav">
+            <button type="button" className={`nav-item ${page === "dashboard" ? "active" : ""}`} onClick={() => setPage("dashboard")}><LayoutDashboard size={23} /><span>Dashboard</span></button>
+            <button type="button" className={`nav-item ${page === "contacts" ? "active" : ""}`} onClick={() => setPage("contacts")}><Users size={23} /><span>Contactos</span></button>
+            <button type="button" className={`nav-item ${page === "conversations" ? "active" : ""}`} onClick={() => setPage("conversations")}><MessageCircle size={23} /><span>Conversations</span></button>
+          </nav>
+          <button type="button" className="nav-item kb-nav" onClick={() => { setModal("kb"); setArticleIndex(null); }}><BookOpen size={23} /><span>KB</span></button>
+        </aside>
+        <div className="app-main">
         <header className="topbar">
-          <div className="brand">
-            <div className="brand-mark"><Headphones size={18} strokeWidth={2.3} /></div>
-            <span>orbit home</span><span className="brand-caption">Atención en vivo</span>
-          </div>
+          <div className="page-brand"><strong>Chat Support</strong><span>Orbit Home</span></div>
           <div className="top-actions">
-            <button className="kb-button" type="button" onClick={() => window.alert("Base de conocimiento lista para consultar.")}>
-              <BookOpen size={14} /><span>Base de conocimiento</span><ArrowUpRight size={12} />
-            </button>
+            <button className="notification-button" type="button" aria-label="Ver notificaciones" onClick={() => setModal("notifications")}><Bell size={21} /><i /></button>
             <div className="profile">
               <div className="profile-copy">Camila Torres<span>Agente de soporte</span></div>
               <div className="avatar">CT</div>
@@ -518,6 +543,33 @@ export function AgentDesk() {
           </div>
         </header>
 
+        {page === "dashboard" && <section className="route-page">
+          <div className="route-header"><div><div className="route-eyebrow">Tu desempeño</div><h1 className="route-title">Buen trabajo, Camila.</h1><p className="route-intro">Una mirada a la atención que brindas cada día.</p></div><span className="date-chip">01 — 23 octubre, 2026 · Demo</span></div>
+          <div className="metric-grid">
+            <div className="metric-card hero"><div className="metric-label">Net Promoter Score <Sparkles size={18} /></div><div><div className="metric-value">+72</div><p className="metric-note">↑ 6 puntos frente al mes anterior</p><p className="route-intro">Basado en 136 respuestas de clientes</p></div><div className="metric-bottom"><span>Promotores<br /><strong>79.4%</strong></span><span>Pasivos<br /><strong>13.2%</strong></span><span>Detractores<br /><strong>7.4%</strong></span></div></div>
+            <div className="metric-card"><div className="metric-label">Chats atendidos <MessageCircle size={18} /></div><div className="metric-value">247</div><span className="metric-note">↑ 23 chats respecto al mes anterior</span></div>
+            <div className="metric-card"><div className="metric-label">First call resolution <Check size={18} /></div><div className="metric-value">86.2<span style={{fontSize:24}}>%</span></div><span className="metric-note">Resueltos desde el primer contacto</span></div>
+          </div>
+          <div className="month-card"><div className="metric-label">Closed ticket rate · este mes <BarChart3 size={18} /></div><div className="metric-value">91.8<span style={{fontSize:24}}>%</span></div><p className="route-intro">224 de 244 tickets cerrados · Objetivo mensual: 90%</p><div className="bar-chart">{[61,73,69,87,78,94,91].map((height,index)=><div className="chart-column" key={index}><i style={{height:`${height}%`}} /><small>{17+index} oct</small></div>)}</div></div>
+        </section>}
+        {page === "contacts" && <section className="route-page">
+          <div className="route-header"><div><div className="route-eyebrow">Tu equipo de apoyo</div><h1 className="route-title">Contactos</h1><p className="route-intro">La persona indicada para cada consulta.</p></div><span className="date-chip">4 contactos internos</span></div>
+          <div className="contacts-list">{[
+            {role:"Supervisor",name:"Lucía Mendoza",initials:"LM",detail:"Escalaciones y asistencia en vivo"},
+            {role:"Manager",name:"Andrés Vidal",initials:"AV",detail:"Operaciones y desempeño del equipo"},
+            {role:"QA",name:"Valeria Ríos",initials:"VR",detail:"Calidad de atención y evaluaciones"},
+            {role:"HR",name:"Daniela Cruz",initials:"DC",detail:"Personas, horarios y bienestar"},
+          ].map(contact=><div className="contact-card" key={contact.role}><div className="contact-card-top"><div className="large-avatar">{contact.initials}</div><div><strong>{contact.role}</strong><p>{contact.name}</p></div></div><p style={{marginBottom:20}}>{contact.detail}</p><button className="contact-action" type="button" onClick={()=>{setContactRole(contact.role);setContactMessage("");setContactSent(false);setModal("contact");}}><MessageCircle size={13} />Escribir mensaje</button></div>)}</div>
+        </section>}
+        {page === "conversations" && <div className="conversation-layout">
+        <aside className="recent-panel">
+          <div className="recent-heading">Conversaciones <MessageCircle size={14} /></div>
+          <div className="recent-subtitle">Chats abiertos ({openIds.length})</div>
+          {openIds.map(id=><button type="button" key={id} className={`recent-card ${idleTone(elapsed[id])} ${activeId===id?"selected":""}`} onClick={()=>selectChat(id)}><span className="recent-card-head"><strong>{chats[id].name}</strong><small>{started[id]?formatTime(elapsed[id]):"Nuevo"}</small></span><p>{messages[id][messages[id].length-1].text}</p></button>)}
+          {!openIds.length && <p className="route-intro">No tienes chats activos.</p>}
+          <div className="capacity"><label>Capacidad de atención <span>{openIds.length} / 2</span></label><div className="capacity-bar"><i style={{width:`${openIds.length*50}%`}} /></div></div>
+        </aside>
+        <div className="desk-body">
         <nav className="tabs-row" aria-label="Conversaciones activas" style={{ "--active-tab-index": Math.max(0, openIds.indexOf(activeId)) } as CSSProperties}>
           {openIds.map((id) => {
             const chat = chats[id];
@@ -551,11 +603,12 @@ export function AgentDesk() {
 
         <main className="workspace">
           <section className="chat-panel" aria-label={`Conversación con ${activeChat.name}`}>
+            {!openIds.length ? <div className="empty-chat"><MessageCircle size={36} /><h3>Todo al día.</h3><p>Has finalizado tus conversaciones. Los próximos chats aparecerán aquí como nuevas pestañas.</p><button type="button" className="contact-action" onClick={()=>{setOpenIds(["jordan","sofia"]);setStarted({jordan:true,sofia:false});setElapsed({jordan:0,sofia:0});setActiveId("jordan");}}>Reiniciar demostración</button></div> : <>
             <div className="chat-heading" aria-hidden="true" />
             <div className="chat-context">
               <span className="context-pill"><Sparkles size={11} />Cliente recurrente</span>
               <span className="context-pill order"><Box size={11} />Pedido {activeChat.order}</span>
-              <button className="resolve-button" type="button" onClick={() => { setOpenIds((ids) => ids.filter((id) => id !== activeId)); const other = openIds.find((id) => id !== activeId); if (other) setActiveId(other); }}><X size={13} />End chat</button>
+              <button className="resolve-button" type="button" onClick={(event) => closeChat(event, activeId)}><X size={13} />End chat</button>
             </div>
             <div className="messages" key={activeId}>
               {messages[activeId].map((message, index) => (
@@ -570,14 +623,15 @@ export function AgentDesk() {
             </div>
             <div className="composer-wrap">
               <div className="composer">
-                <button className="icon-button" type="button" title="Adjuntar archivo"><Paperclip size={16} /></button>
+                <label className="icon-button" title="Adjuntar archivo" style={{cursor:"pointer"}}><Paperclip size={16} /><input type="file" style={{display:"none"}} onChange={event=>setAttachment(event.target.files?.[0]?.name || "")} aria-label="Adjuntar archivo" /></label>
                 <textarea value={draft} onChange={(event) => setDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter" && !event.shiftKey) { event.preventDefault(); sendMessage(); } }} placeholder="Escribe una respuesta…" aria-label="Escribe una respuesta" />
                 <div className="composer-actions">
                   <button className={`send-button ${sentState ? "sent" : ""}`} type="button" onClick={sendMessage} aria-label="Enviar mensaje">{sentState ? <Check size={16} /> : <Send size={15} />}</button>
                 </div>
               </div>
-              <div className="composer-hint">Pulsa Intro para enviar · Mayús + Intro para nueva línea</div>
+              <div className="composer-hint">{attachment ? `Adjunto: ${attachment}` : "Pulsa Intro para enviar · Mayús + Intro para nueva línea"}</div>
             </div>
+            </>}
           </section>
 
           <aside className="side-panel">
@@ -623,7 +677,7 @@ export function AgentDesk() {
                   </div>
                   <label className="field-label" htmlFor="agent-notes">Notas internas</label>
                   <textarea id="agent-notes" className="notes-area" value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Añade contexto para el siguiente agente…" />
-                  <div className="save-note"><Check size={12} />Cambios guardados automáticamente</div>
+                  <div className="save-note"><Check size={12} />Notas en esta sesión · demostración</div>
                 </>
               )}
               {workspaceTab === "order" && (
@@ -643,7 +697,16 @@ export function AgentDesk() {
             </div>
           </aside>
         </main>
+        </div>
+        </div>}
+        </div>
       </div>
+      {modal && <div className="modal-backdrop" onClick={()=>setModal(null)}><section className="desk-modal" role="dialog" aria-modal="true" aria-label={modal==="kb"?"Base de conocimiento":modal==="contact"?`Mensaje a ${contactRole}`:"Notificaciones"} onClick={event=>event.stopPropagation()}>
+        <div className="modal-head"><h2>{modal==="kb"?"Base de conocimiento":modal==="contact"?contactRole:"Notificaciones"}</h2><button className="icon-button" type="button" aria-label="Cerrar ventana" onClick={()=>setModal(null)}><X size={19} /></button></div>
+        {modal==="kb" && (articleIndex===null ? <><p className="route-intro" style={{marginBottom:18}}>Respuestas y guías para acompañar cada conversación.</p><input autoFocus className="modal-search" value={kbSearch} onChange={event=>setKbSearch(event.target.value)} placeholder="Buscar artículos, productos o pedidos…" aria-label="Buscar en KB" />{articles.map((article,index)=>({...article,index})).filter(article=>`${article.title} ${article.category}`.toLowerCase().includes(kbSearch.toLowerCase())).map(article=><button type="button" className="kb-article" key={article.index} onClick={()=>setArticleIndex(article.index)}><small>{article.category}</small>{article.title}</button>)}{!articles.some(article=>`${article.title} ${article.category}`.toLowerCase().includes(kbSearch.toLowerCase()))&&<div className="tracking-empty"><strong>Sin artículos para esta búsqueda</strong><p>Prueba con “pedido”, “Luna” o “devoluciones”.</p></div>}</> : <><button type="button" className="contact-action" onClick={()=>setArticleIndex(null)}>Volver a los artículos</button><h3 style={{marginTop:24}}>{articles[articleIndex].title}</h3><p className="article-copy">{articles[articleIndex].body}</p><p className="route-intro">Artículo de ejemplo · Orbit Home KB</p></>)}
+        {modal==="notifications" && <><p className="route-intro">Actualizaciones de tu espacio de trabajo</p><div className="notice">Nueva conversación de Sofia Chen<small>En espera de tu primera respuesta · Ahora</small></div><div className="notice">Tu resumen mensual está disponible<small>Consulta tus indicadores desde Dashboard · Hoy</small></div></>}
+        {modal==="contact" && (contactSent?<div className="empty-chat"><Check size={32} /><h3>Mensaje preparado</h3><p>Esta es una demostración. El envío al equipo estará disponible al conectar la mensajería interna.</p></div>:<><p className="route-intro" style={{marginBottom:18}}>Redacta una consulta para {contactRole}. Vista previa de mensajería interna.</p><textarea className="notes-area" aria-label="Mensaje interno" value={contactMessage} onChange={event=>setContactMessage(event.target.value)} placeholder="¿En qué necesitas ayuda?" /><button type="button" className="contact-action" style={{marginTop:14,opacity:contactMessage.trim()?1:.5}} disabled={!contactMessage.trim()} onClick={()=>setContactSent(true)}><Send size={13} />Preparar mensaje</button></>)}
+      </section></div>}
     </div>
   );
 }
