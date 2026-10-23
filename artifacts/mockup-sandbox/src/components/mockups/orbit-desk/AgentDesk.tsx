@@ -300,9 +300,9 @@ export function AgentDesk() {
           --ink:#f2efff; --muted:#b7accd; --line:rgba(235,226,255,.18);
           color:var(--ink);
           background:
-            radial-gradient(ellipse at 14% 12%,rgba(128,96,174,.38),transparent 38%),
-            radial-gradient(ellipse at 84% 82%,rgba(93,77,137,.42),transparent 42%),
-            linear-gradient(132deg,#211b32 0%,#302642 48%,#252038 100%);
+            radial-gradient(ellipse at 82% 28%,rgba(147,76,157,.42),transparent 44%),
+            radial-gradient(ellipse at 12% 88%,rgba(83,70,128,.28),transparent 42%),
+            linear-gradient(115deg,#111a2b 0%,#1b1a31 43%,#31223f 72%,#50345c 100%);
         }
         .brand { color:#f4efff; }
         .brand-mark { background:linear-gradient(145deg,#937cc2,#66578f);box-shadow:0 7px 20px rgba(9,5,22,.32),inset 0 1px rgba(255,255,255,.28); }
@@ -312,14 +312,15 @@ export function AgentDesk() {
         .profile { border-left-color:rgba(237,228,255,.16); }
         .profile-copy { color:#f0eafb; }
         .avatar { background:rgba(184,218,210,.2);color:#c8f0df;border-color:rgba(255,255,255,.32); }
-        .tabs-row { min-height:58px;align-items:flex-end;gap:8px;padding:8px 2px 0; }
+        .tabs-row { min-height:58px;align-items:flex-end;gap:0;padding:8px 2px 0;position:relative;z-index:2;margin-bottom:-1px; }
         .conversation-tab {
-          height:46px;border-radius:12px 12px 2px 2px;
+          height:46px;border-radius:12px 12px 0 0;
           border-color:rgba(231,220,255,.2);border-bottom-color:rgba(231,220,255,.13);
           background:rgba(107,89,145,.19);color:#cec4e0;
           box-shadow:inset 0 1px rgba(255,255,255,.09);
           backdrop-filter:blur(22px) saturate(155%);
         }
+        .conversation-tab + .conversation-tab { margin-left:-1px; }
         .conversation-tab.selected {
           z-index:1;transform:translateY(1px);
           color:#f4efff;background:rgba(131,113,171,.24);
@@ -330,7 +331,9 @@ export function AgentDesk() {
         .conversation-tab.edge-warning { border-color:rgba(255,210,99,.9);box-shadow:0 0 0 1px rgba(255,210,99,.3),0 0 20px rgba(255,210,99,.28),inset 0 1px rgba(255,255,255,.13); }
         .conversation-tab.edge-critical { border-color:rgba(255,116,130,.94);box-shadow:0 0 0 1px rgba(255,116,130,.32),0 0 22px rgba(255,90,119,.31),inset 0 1px rgba(255,255,255,.13); }
         .conversation-tab.incoming { background:rgba(57,151,112,.2);border-color:rgba(105,244,173,.76);color:#effff6;box-shadow:0 0 0 1px rgba(105,244,173,.24),0 0 20px rgba(83,242,163,.28),inset 0 1px rgba(255,255,255,.16); }
-        .conversation-tab.incoming::after { border-radius:12px 12px 2px 2px;border-color:rgba(111,255,181,.85);box-shadow:0 0 20px rgba(89,255,168,.46); }
+        .conversation-tab.incoming::after { inset:0;border-radius:12px 12px 0 0;border-color:rgba(111,255,181,.85);box-shadow:0 0 20px rgba(89,255,168,.46); }
+        .conversation-tab.selected::before { content:"";position:absolute;left:1px;right:1px;bottom:-2px;height:4px;background:rgba(131,113,171,.24);pointer-events:none; }
+        .workspace { grid-template-columns:minmax(0,3fr) minmax(360px,2fr);gap:17px; }
         .tab-name { color:#f0eafb; }
         .tab-avatar,.large-avatar { background:rgba(197,180,239,.22);color:#e4d8ff;border:1px solid rgba(239,229,255,.14); }
         .idle { background:rgba(91,193,137,.15);color:#a8f1c7; }
@@ -405,8 +408,11 @@ export function AgentDesk() {
         .tracking-empty p { color:#c0b5d1; }
         .tracking-ref { color:#e1d8f0;background:rgba(255,255,255,.09); }
         @media (max-width:700px) {
-          .conversation-tab { height:44px;border-radius:11px 11px 2px 2px; }
-          .conversation-tab.incoming::after { border-radius:11px 11px 2px 2px; }
+          .conversation-tab { height:44px;border-radius:11px 11px 0 0; }
+          .conversation-tab.incoming::after { border-radius:11px 11px 0 0; }
+        }
+        @media (max-width:900px) and (min-width:701px) {
+          .workspace { grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:12px; }
         }
         @media (prefers-reduced-motion:reduce) {
           .conversation-tab.incoming::after { animation:none; }
