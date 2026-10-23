@@ -312,7 +312,13 @@ export function AgentDesk() {
         .profile { border-left-color:rgba(237,228,255,.16); }
         .profile-copy { color:#f0eafb; }
         .avatar { background:rgba(184,218,210,.2);color:#c8f0df;border-color:rgba(255,255,255,.32); }
-        .tabs-row { min-height:58px;align-items:flex-end;gap:0;padding:8px 2px 0;position:relative;z-index:2;margin-bottom:-1px; }
+        .tabs-row {
+          min-height:58px;align-items:flex-end;gap:0;padding:8px 12px 0;
+          position:relative;z-index:2;margin-bottom:-1px;
+          border:1px solid rgba(235,225,255,.12);border-bottom-color:rgba(235,225,255,.16);
+          border-radius:14px 14px 0 0;background:rgba(10,12,25,.18);
+          box-shadow:inset 0 1px rgba(255,255,255,.04);
+        }
         .conversation-tab {
           height:46px;border-radius:12px 12px 0 0;
           border-color:rgba(231,220,255,.2);border-bottom-color:rgba(231,220,255,.13);
@@ -320,10 +326,11 @@ export function AgentDesk() {
           box-shadow:inset 0 1px rgba(255,255,255,.09);
           backdrop-filter:blur(22px) saturate(155%);
         }
-        .conversation-tab + .conversation-tab { margin-left:-1px; }
+        .conversation-tab + .conversation-tab { margin-left:-1px;border-left-color:rgba(235,225,255,.1); }
+        .conversation-tab:hover { transform:none;background:rgba(131,113,171,.28); }
         .conversation-tab.selected {
           z-index:1;transform:translateY(1px);
-          color:#f4efff;background:rgba(131,113,171,.24);
+          color:#f4efff;background:rgba(117,101,151,.17);
           border-color:rgba(239,231,255,.3);border-bottom-color:transparent;
           box-shadow:inset 0 1px rgba(255,255,255,.16),0 -3px 20px rgba(171,145,222,.08);
         }
@@ -332,7 +339,7 @@ export function AgentDesk() {
         .conversation-tab.edge-critical { border-color:rgba(255,116,130,.94);box-shadow:0 0 0 1px rgba(255,116,130,.32),0 0 22px rgba(255,90,119,.31),inset 0 1px rgba(255,255,255,.13); }
         .conversation-tab.incoming { background:rgba(57,151,112,.2);border-color:rgba(105,244,173,.76);color:#effff6;box-shadow:0 0 0 1px rgba(105,244,173,.24),0 0 20px rgba(83,242,163,.28),inset 0 1px rgba(255,255,255,.16); }
         .conversation-tab.incoming::after { inset:0;border-radius:12px 12px 0 0;border-color:rgba(111,255,181,.85);box-shadow:0 0 20px rgba(89,255,168,.46); }
-        .conversation-tab.selected::before { content:"";position:absolute;left:1px;right:1px;bottom:-2px;height:4px;background:rgba(131,113,171,.24);pointer-events:none; }
+        .conversation-tab.selected::before { content:"";position:absolute;left:1px;right:1px;bottom:-7px;height:9px;background:rgba(117,101,151,.17);pointer-events:none; }
         .workspace { grid-template-columns:minmax(0,3fr) minmax(360px,2fr);gap:17px; }
         .tab-name { color:#f0eafb; }
         .tab-avatar,.large-avatar { background:rgba(197,180,239,.22);color:#e4d8ff;border:1px solid rgba(239,229,255,.14); }
