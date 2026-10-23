@@ -346,6 +346,43 @@ export function AgentDesk() {
         .conversation-tab.incoming { background:rgba(57,151,112,.2);border-color:rgba(105,244,173,.76);color:#effff6;box-shadow:0 0 0 1px rgba(105,244,173,.24),0 0 20px rgba(83,242,163,.28),inset 0 1px rgba(255,255,255,.16); }
         .conversation-tab.incoming::after { inset:0;border-radius:12px 12px 0 0;border-color:rgba(111,255,181,.85);box-shadow:0 0 20px rgba(89,255,168,.46); }
         .conversation-tab.selected::before { content:none; }
+        /* Chrome-style shoulders: the selected silhouette opens into the chat,
+           rather than drawing a closed rectangular outline around the tab. */
+        .orbit-desk { --chrome-surface:#302e4c; }
+        .tabs-row { padding:8px 0 0;border-bottom:0;overflow:visible; }
+        .tabs-row .conversation-tab {
+          height:48px;padding:7px 24px;isolation:isolate;
+          border:0;border-radius:0;background:none;box-shadow:none;
+          backdrop-filter:none;transform:none;
+          --tab-led:#74e9ad;
+          transition:color .16s ease;
+        }
+        .tabs-row .conversation-tab + .conversation-tab { margin-left:-12px; }
+        .tabs-row .conversation-tab.selected { z-index:3; }
+        .tabs-row .conversation-tab.edge-warning { --tab-led:#ffd263; }
+        .tabs-row .conversation-tab.edge-critical { --tab-led:#ff7482; }
+        .tabs-row .conversation-tab::before,
+        .tabs-row .conversation-tab::after { content:none; }
+        .chrome-tab-shape {
+          position:absolute;inset:0 0 -1px;width:100%;height:calc(100% + 1px);
+          overflow:visible;z-index:-1;pointer-events:none;
+        }
+        .chrome-tab-fill { fill:rgba(171,155,204,.09);transition:fill .18s ease; }
+        .conversation-tab:hover .chrome-tab-fill { fill:rgba(171,155,204,.17); }
+        .conversation-tab.selected .chrome-tab-fill { fill:var(--chrome-surface); }
+        .chrome-tab-edge {
+          fill:none;stroke:var(--tab-led);stroke-width:1;
+          opacity:.45;filter:drop-shadow(0 -1px 3px var(--tab-led));
+          transition:stroke .2s ease,opacity .18s ease;
+        }
+        .conversation-tab.selected .chrome-tab-edge { opacity:.85; }
+        .conversation-tab.incoming .chrome-tab-fill { fill:rgba(57,151,112,.14); }
+        .conversation-tab.incoming .chrome-tab-edge { animation:incomingPulse 1.8s ease-in-out infinite; }
+        .chat-panel { border-top:0 !important; }
+        .chat-heading { background:var(--chrome-surface); }
+        @media (prefers-reduced-motion:reduce) {
+          .conversation-tab.incoming .chrome-tab-edge { animation:none;opacity:.85; }
+        }
         .workspace { grid-template-columns:minmax(0,3fr) minmax(360px,2fr);gap:17px; }
         .chat-panel { border-radius:0 0 21px 21px; }
         .messages { animation:orbit-chat-arrive .24s cubic-bezier(.2,.8,.2,1) both; }
@@ -471,6 +508,10 @@ export function AgentDesk() {
                 onClick={() => selectChat(id)}
                 aria-pressed={isActive}
               >
+                <svg className="chrome-tab-shape" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true">
+                  <path className="chrome-tab-fill" d="M0 48 Q12 48 12 36 V12 Q12 0 24 0 H276 Q288 0 288 12 V36 Q288 48 300 48 Z" />
+                  <path className="chrome-tab-edge" vectorEffect="non-scaling-stroke" d="M0 48 Q12 48 12 36 V12 Q12 0 24 0 H276 Q288 0 288 12 V36 Q288 48 300 48" />
+                </svg>
                 <span className="tab-avatar">{chat.initials}</span>
                 <span className="tab-main">
                   <span className="tab-name">{chat.name}</span>
