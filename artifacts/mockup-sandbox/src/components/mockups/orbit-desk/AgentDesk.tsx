@@ -1,5 +1,5 @@
 import "./AgentDesk.css";
-import { useEffect, useState, type CSSProperties } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell,
   BarChart3,
@@ -565,46 +565,14 @@ export function AgentDesk() {
         <aside className="recent-panel">
           <div className="recent-heading">Conversaciones <MessageCircle size={14} /></div>
           <div className="recent-subtitle">Chats abiertos ({openIds.length})</div>
-          {openIds.map(id=><button type="button" key={id} className={`recent-card ${idleTone(elapsed[id])} ${activeId===id?"selected":""}`} onClick={()=>selectChat(id)}><span className="recent-card-head"><strong>{chats[id].name}</strong><small>{started[id]?formatTime(elapsed[id]):"Nuevo"}</small></span><p>{messages[id][messages[id].length-1].text}</p></button>)}
+          {openIds.map(id=><button type="button" key={id} className={`recent-card ${idleTone(elapsed[id])} ${activeId===id?"selected":""} ${!started[id]?"incoming":""}`} onClick={()=>selectChat(id)} aria-pressed={activeId===id} aria-label={`${chats[id].name}, ${!started[id]?"chat nuevo":`${formatTime(elapsed[id])} sin respuesta${elapsed[id]>=120?", requiere atención":""}`}`}><span className="recent-card-head"><strong>{chats[id].name}</strong><small>{started[id]?formatTime(elapsed[id]):"Nuevo"}</small></span><p>{messages[id][messages[id].length-1].text}</p></button>)}
           {!openIds.length && <p className="route-intro">No tienes chats activos.</p>}
           <div className="capacity"><label>Capacidad de atención <span>{openIds.length} / 2</span></label><div className="capacity-bar"><i style={{width:`${openIds.length*50}%`}} /></div></div>
         </aside>
         <div className="desk-body">
-        <nav className="tabs-row" aria-label="Conversaciones activas" style={{ "--active-tab-index": Math.max(0, openIds.indexOf(activeId)) } as CSSProperties}>
-          {openIds.map((id) => {
-            const chat = chats[id];
-            const isActive = activeId === id;
-            const isNew = id === "sofia" && !started.sofia;
-            const tone = started[id] ? idleTone(elapsed[id]) : "healthy";
-            return (
-              <button
-                type="button"
-                key={id}
-                className={`conversation-tab ${started[id] ? `edge-${tone}` : ""} ${isActive ? "selected" : ""} ${isNew ? "incoming" : ""}`}
-                onClick={() => selectChat(id)}
-                aria-pressed={isActive}
-              >
-                <svg className="chrome-tab-shape" viewBox="0 0 300 48" preserveAspectRatio="none" aria-hidden="true">
-                  <path className="chrome-tab-fill" d="M0 48 Q12 48 12 36 V12 Q12 0 24 0 H276 Q288 0 288 12 V36 Q288 48 300 48 Z" />
-                  <path className="chrome-tab-edge" vectorEffect="non-scaling-stroke" d="M0 48 Q12 48 12 36 V12 Q12 0 24 0 H276 Q288 0 288 12 V36 Q288 48 300 48" />
-                </svg>
-                <span className="tab-avatar">{chat.initials}</span>
-                <span className="tab-main">
-                  <span className="tab-name">{chat.name}</span>
-                </span>
-                <span className="tab-meta">
-                  {started[id] ? <span className={`idle ${tone}`}><i className="idle-dot" />{formatTime(elapsed[id])}</span> : <span className="new-badge">Nuevo</span>}
-                </span>
-                <span className="close-tab" role="button" aria-label={`Cerrar conversación con ${chat.name}`} onClick={(event) => closeChat(event, id)}><X size={14} /></span>
-              </button>
-            );
-          })}
-        </nav>
-
         <main className="workspace">
           <section className="chat-panel" aria-label={`Conversación con ${activeChat.name}`}>
-            {!openIds.length ? <div className="empty-chat"><MessageCircle size={36} /><h3>Todo al día.</h3><p>Has finalizado tus conversaciones. Los próximos chats aparecerán aquí como nuevas pestañas.</p><button type="button" className="contact-action" onClick={()=>{setOpenIds(["jordan","sofia"]);setStarted({jordan:true,sofia:false});setElapsed({jordan:0,sofia:0});setActiveId("jordan");}}>Reiniciar demostración</button></div> : <>
-            <div className="chat-heading" aria-hidden="true" />
+            {!openIds.length ? <div className="empty-chat"><MessageCircle size={36} /><h3>Todo al día.</h3><p>Has finalizado tus conversaciones. Los próximos chats aparecerán en la lista de la izquierda.</p><button type="button" className="contact-action" onClick={()=>{setOpenIds(["jordan","sofia"]);setStarted({jordan:true,sofia:false});setElapsed({jordan:0,sofia:0});setActiveId("jordan");}}>Reiniciar demostración</button></div> : <>
             <div className="chat-context">
               <span className="context-pill"><Sparkles size={11} />Cliente recurrente</span>
               <span className="context-pill order"><Box size={11} />Pedido {activeChat.order}</span>
