@@ -524,11 +524,18 @@ export function AgentDesk() {
         <aside className="app-sidebar" aria-label="Navegación principal">
           <div className="sidebar-logo" title="Orbit Home">
             <svg className="orbit-chat-mark" viewBox="0 0 48 48" fill="none" role="img" aria-label="Orbit Home · Chat">
-              <path d="M19 22h20a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5h-1v4l-7-4H21a5 5 0 0 1-5-5v-9" fill="#238d99" stroke="#b3ece4" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-              <path d="M4 13V9a6 6 0 0 1 6-6h23a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H17l-8 8v-8a6 6 0 0 1-5-6v-3" fill="#273141" stroke="#b3ece4" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="13" cy="17" r="2" fill="#61cec4" />
-              <circle cx="21" cy="17" r="2" fill="#61cec4" />
-              <circle cx="29" cy="17" r="2" fill="#61cec4" />
+              <defs>
+                <linearGradient id="orbit-envelope-flap" x1="7" y1="8" x2="35" y2="26" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#3ABAAE" /><stop offset="1" stopColor="#527EC3" />
+                </linearGradient>
+                <linearGradient id="orbit-envelope-body" x1="8" y1="39" x2="40" y2="20" gradientUnits="userSpaceOnUse">
+                  <stop stopColor="#319F9A" /><stop offset="1" stopColor="#4F75B5" />
+                </linearGradient>
+              </defs>
+              <path d="M9 8h27c1.4 0 2.3.4 3.1 1.2L22.4 25.7 6 13.4V11a3 3 0 0 1 3-3Z" fill="url(#orbit-envelope-flap)" />
+              <path d="M6 19.1 19.6 29.3 6 39.2V19.1Z" fill="#35B5A5" />
+              <path d="M10 42c-1.4 0-2.4-.4-3.2-1.2L23.2 29l17.8-17v26a4 4 0 0 1-4 4H10Z" fill="url(#orbit-envelope-body)" />
+              <path d="m35.8 9.8 4.3-4.3a2.5 2.5 0 0 1 3.5 3.5l-4.3 4.3Z" fill="#C6A15B" />
             </svg>
           </div>
           <nav className="sidebar-nav">

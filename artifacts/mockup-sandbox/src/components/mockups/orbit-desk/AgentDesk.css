@@ -601,10 +601,7 @@
 .orbit-desk .nav-item.active,
 .orbit-desk .nav-item:hover { background:var(--slate);color:var(--brass); }
 .orbit-desk .nav-item.active::before { background:var(--brass); }
-.orbit-desk .sidebar-logo svg.orbit-chat-mark path { stroke:var(--brass); }
-.orbit-desk .orbit-chat-mark path:first-child { fill:var(--brass); }
-.orbit-desk .orbit-chat-mark path:nth-child(2) { fill:var(--navy); }
-.orbit-desk .orbit-chat-mark circle { fill:var(--ivory); }
+.orbit-desk .sidebar-logo svg.orbit-chat-mark { filter:none; }
 .orbit-desk .notification-button { color:#c7cbd0; }
 .orbit-desk .notification-button:hover { background:var(--slate);color:var(--brass); }
 .orbit-desk .notification-button i { background:var(--brass);border-color:var(--navy); }
