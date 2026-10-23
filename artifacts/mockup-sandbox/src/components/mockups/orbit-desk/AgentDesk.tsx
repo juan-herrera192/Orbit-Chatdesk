@@ -12,7 +12,6 @@ import {
   CircleHelp,
   Clock3,
   FileText,
-  Headphones,
   MessageCircle,
   Paperclip,
   Search,
@@ -523,7 +522,7 @@ export function AgentDesk() {
       `}</style>
       <div className="orbit-shell">
         <aside className="app-sidebar" aria-label="Navegación principal">
-          <div className="sidebar-logo" title="Orbit Home"><Headphones size={24} /></div>
+          <div className="sidebar-logo" title="Orbit Home"><MessageCircle size={24} /></div>
           <nav className="sidebar-nav">
             <button type="button" className={`nav-item ${page === "dashboard" ? "active" : ""}`} onClick={() => setPage("dashboard")}><LayoutDashboard size={23} /><span>Dashboard</span></button>
             <button type="button" className={`nav-item ${page === "contacts" ? "active" : ""}`} onClick={() => setPage("contacts")}><Users size={23} /><span>Contactos</span></button>
