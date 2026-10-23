@@ -1,3 +1,9 @@
+.orbit-desk .disposition-hint {
+  color: #aebccc;
+  font-size: 11px;
+  line-height: 1.65;
+  margin: -6px 0 22px;
+}
 /* Control desk, with layout inherited from the Lark CRM exploration.
    Scoped to this preview so sibling mockups keep their own visual systems. */
 .orbit-desk.orbit-desk {

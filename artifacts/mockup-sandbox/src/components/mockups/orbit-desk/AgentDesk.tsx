@@ -22,6 +22,14 @@ import {
 
 type ChatId = "jordan" | "sofia";
 type WorkspaceTab = "info" | "notes" | "order";
+const dispositionCategories = {
+  "Customer Service": ["Estado del pedido", "Entrega y transporte", "Cambio o devolución", "Facturación y pagos", "Actualización de datos"],
+  "Tech Support": ["Instalación y montaje", "Configuración del producto", "Problema de funcionamiento", "Conectividad", "Garantía y reparación"],
+  Sales: ["Información de producto", "Disponibilidad", "Cotización", "Nueva compra", "Accesorios y complementos"],
+  Retention: ["Solicitud de cancelación", "Insatisfacción con el producto", "Oferta de permanencia", "Seguimiento de satisfacción"],
+};
+type DispositionCategory = keyof typeof dispositionCategories;
+type ConversationNotes = { category: DispositionCategory; subcategory: string; notes: string };
 type Chat = {
   id: ChatId;
   name: string;
@@ -104,9 +112,15 @@ export function AgentDesk() {
   const [openIds, setOpenIds] = useState<ChatId[]>(["jordan", "sofia"]);
   const [started, setStarted] = useState<Record<ChatId, boolean>>({ jordan: true, sofia: false });
   const [elapsed, setElapsed] = useState<Record<ChatId, number>>({ jordan: 42, sofia: 0 });
-  const [workspaceTab, setWorkspaceTab] = useState<WorkspaceTab>("info");
-  const [disposition, setDisposition] = useState("Consulta de pedido");
-  const [notes, setNotes] = useState("Cliente disponible después de las 14:00. Revisar actualización de transporte.");
+  const [workspaceTab, setWorkspaceTab] = useState<WorkspaceTab>(() => new URLSearchParams(window.location.search).get("panel") === "notes" ? "notes" : "info");
+  const [conversationNotes, setConversationNotes] = useState<Record<ChatId, ConversationNotes>>({
+    jordan: { category: "Customer Service", subcategory: "Estado del pedido", notes: "Cliente disponible después de las 14:00. Revisar actualización de transporte." },
+    sofia: { category: "Tech Support", subcategory: "Instalación y montaje", notes: "" },
+  });
+  const disposition = conversationNotes[activeId];
+  const updateDisposition = (updates: Partial<ConversationNotes>) => {
+    setConversationNotes(current => ({ ...current, [activeId]: { ...current[activeId], ...updates } }));
+  };
   const [orderSearch, setOrderSearch] = useState("");
   const [draft, setDraft] = useState("");
   const [messages, setMessages] = useState(initialMessages);
@@ -651,14 +665,22 @@ export function AgentDesk() {
               {workspaceTab === "notes" && (
                 <>
                   <div className="section-kicker">Resultado de la atención</div>
-                  <label className="field-label" htmlFor="disposition">Disposición de llamada</label>
+                  <p className="disposition-hint">Clasifica el motivo del contacto y añade el contexto de esta conversación.</p>
+                  <label className="field-label" htmlFor="disposition-category">Categoría</label>
                   <div className="select-wrap">
-                    <select id="disposition" value={disposition} onChange={(event) => setDisposition(event.target.value)}>
-                      <option>Consulta de pedido</option><option>Información de producto</option><option>Problema de entrega</option><option>Devolución o cambio</option><option>Seguimiento requerido</option>
+                    <select id="disposition-category" value={disposition.category} onChange={(event) => updateDisposition({ category: event.target.value as DispositionCategory, subcategory: "" })}>
+                      {Object.keys(dispositionCategories).map(category => <option key={category} value={category}>{category}</option>)}
+                    </select><ChevronDown size={14} />
+                  </div>
+                  <label className="field-label" htmlFor="disposition-subcategory">Subcategoría</label>
+                  <div className="select-wrap">
+                    <select id="disposition-subcategory" value={disposition.subcategory} onChange={(event) => updateDisposition({ subcategory: event.target.value })}>
+                      <option value="" disabled>Selecciona una subcategoría</option>
+                      {dispositionCategories[disposition.category].map(subcategory => <option key={subcategory} value={subcategory}>{subcategory}</option>)}
                     </select><ChevronDown size={14} />
                   </div>
                   <label className="field-label" htmlFor="agent-notes">Notas internas</label>
-                  <textarea id="agent-notes" className="notes-area" value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="Añade contexto para el siguiente agente…" />
+                  <textarea id="agent-notes" className="notes-area" value={disposition.notes} onChange={(event) => updateDisposition({ notes: event.target.value })} placeholder="Añade contexto para el siguiente agente…" />
                   <div className="save-note"><Check size={12} />Notas en esta sesión · demostración</div>
                 </>
               )}
