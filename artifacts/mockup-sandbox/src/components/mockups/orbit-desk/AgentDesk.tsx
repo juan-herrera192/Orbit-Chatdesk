@@ -522,7 +522,15 @@ export function AgentDesk() {
       `}</style>
       <div className="orbit-shell">
         <aside className="app-sidebar" aria-label="Navegación principal">
-          <div className="sidebar-logo" title="Orbit Home"><MessageCircle size={24} /></div>
+          <div className="sidebar-logo" title="Orbit Home">
+            <svg className="orbit-chat-mark" viewBox="0 0 48 48" fill="none" role="img" aria-label="Orbit Home · Chat">
+              <path d="M19 22h20a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5h-1v4l-7-4H21a5 5 0 0 1-5-5v-9" fill="#238d99" stroke="#b3ece4" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 13V9a6 6 0 0 1 6-6h23a6 6 0 0 1 6 6v16a6 6 0 0 1-6 6H17l-8 8v-8a6 6 0 0 1-5-6v-3" fill="#273141" stroke="#b3ece4" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="13" cy="17" r="2" fill="#61cec4" />
+              <circle cx="21" cy="17" r="2" fill="#61cec4" />
+              <circle cx="29" cy="17" r="2" fill="#61cec4" />
+            </svg>
+          </div>
           <nav className="sidebar-nav">
             <button type="button" className={`nav-item ${page === "dashboard" ? "active" : ""}`} onClick={() => setPage("dashboard")}><LayoutDashboard size={23} /><span>Dashboard</span></button>
             <button type="button" className={`nav-item ${page === "contacts" ? "active" : ""}`} onClick={() => setPage("contacts")}><Users size={23} /><span>Contactos</span></button>

@@ -442,6 +442,7 @@
 .orbit-desk .nav-item.active { background:#2c3d49; color:#48c3c7; }
 .orbit-desk .nav-item:hover { background:#303c4c; }
 .orbit-desk .sidebar-logo svg { background:#238d99; box-shadow:none; }
+.orbit-desk .sidebar-logo svg.orbit-chat-mark { background:none; border-radius:0; padding:0; width:44px; height:44px; }
 .orbit-desk .avatar,
 .orbit-desk .tab-avatar,
 .orbit-desk .large-avatar { background:#3a5360; color:#d3eeed; border-color:#4c6571; }
