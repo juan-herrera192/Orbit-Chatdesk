@@ -313,23 +313,29 @@ export function AgentDesk() {
         .profile-copy { color:#f0eafb; }
         .avatar { background:rgba(184,218,210,.2);color:#c8f0df;border-color:rgba(255,255,255,.32); }
         .tabs-row {
-          min-height:58px;align-items:flex-end;gap:0;padding:8px 12px 0;
+          width:calc((100% - 17px) * .6);
+          min-height:58px;align-items:flex-end;gap:0;padding:8px 0 0;
           position:relative;z-index:2;margin-bottom:-1px;
-          border:1px solid rgba(235,225,255,.12);border-bottom-color:rgba(235,225,255,.16);
-          border-radius:14px 14px 0 0;background:rgba(10,12,25,.18);
-          box-shadow:inset 0 1px rgba(255,255,255,.04);
+          border:1px solid rgba(235,225,255,.14);border-bottom-color:rgba(235,225,255,.18);
+          border-radius:16px 16px 0 0;background:rgba(10,12,25,.2);
+          box-shadow:inset 0 1px rgba(255,255,255,.06);
         }
         .conversation-tab {
-          height:46px;border-radius:12px 12px 0 0;
-          border-color:rgba(231,220,255,.2);border-bottom-color:rgba(231,220,255,.13);
-          background:rgba(107,89,145,.19);color:#cec4e0;
+          height:47px;border-radius:12px 12px 0 0;
+          border-color:rgba(231,220,255,.2);border-bottom-color:rgba(231,220,255,.12);
+          background:rgba(107,89,145,.16);color:#cec4e0;
           box-shadow:inset 0 1px rgba(255,255,255,.09);
           backdrop-filter:blur(22px) saturate(155%);
+          transform:translateY(-3px);
+          transition:transform .24s cubic-bezier(.2,.8,.2,1),opacity .2s ease;
         }
-        .conversation-tab + .conversation-tab { margin-left:-1px;border-left-color:rgba(235,225,255,.1); }
-        .conversation-tab:hover { transform:none;background:rgba(131,113,171,.28); }
+        .conversation-tab + .conversation-tab {
+          margin-left:-1px;
+          border-left-color:rgba(235,225,255,.18);
+        }
+        .conversation-tab:hover { background:rgba(131,113,171,.28); }
         .conversation-tab.selected {
-          z-index:1;transform:translateY(1px);
+          z-index:2;transform:translateY(0);
           color:#f4efff;background:rgba(117,101,151,.17);
           border-color:rgba(239,231,255,.3);border-bottom-color:transparent;
           box-shadow:inset 0 1px rgba(255,255,255,.16),0 -3px 20px rgba(171,145,222,.08);
@@ -339,8 +345,14 @@ export function AgentDesk() {
         .conversation-tab.edge-critical { border-color:rgba(255,116,130,.94);box-shadow:0 0 0 1px rgba(255,116,130,.32),0 0 22px rgba(255,90,119,.31),inset 0 1px rgba(255,255,255,.13); }
         .conversation-tab.incoming { background:rgba(57,151,112,.2);border-color:rgba(105,244,173,.76);color:#effff6;box-shadow:0 0 0 1px rgba(105,244,173,.24),0 0 20px rgba(83,242,163,.28),inset 0 1px rgba(255,255,255,.16); }
         .conversation-tab.incoming::after { inset:0;border-radius:12px 12px 0 0;border-color:rgba(111,255,181,.85);box-shadow:0 0 20px rgba(89,255,168,.46); }
-        .conversation-tab.selected::before { content:"";position:absolute;left:1px;right:1px;bottom:-7px;height:9px;background:rgba(117,101,151,.17);pointer-events:none; }
+        .conversation-tab.selected::before { content:none; }
         .workspace { grid-template-columns:minmax(0,3fr) minmax(360px,2fr);gap:17px; }
+        .chat-panel { border-radius:0 0 21px 21px; }
+        .messages { animation:orbit-chat-arrive .24s cubic-bezier(.2,.8,.2,1) both; }
+        @keyframes orbit-chat-arrive {
+          from { opacity:0;transform:translateY(7px); }
+          to { opacity:1;transform:translateY(0); }
+        }
         .tab-name { color:#f0eafb; }
         .tab-avatar,.large-avatar { background:rgba(197,180,239,.22);color:#e4d8ff;border:1px solid rgba(239,229,255,.14); }
         .idle { background:rgba(91,193,137,.15);color:#a8f1c7; }
@@ -415,11 +427,14 @@ export function AgentDesk() {
         .tracking-empty p { color:#c0b5d1; }
         .tracking-ref { color:#e1d8f0;background:rgba(255,255,255,.09); }
         @media (max-width:700px) {
+          .tabs-row { width:100%;gap:0; }
           .conversation-tab { height:44px;border-radius:11px 11px 0 0; }
           .conversation-tab.incoming::after { border-radius:11px 11px 0 0; }
+          .chat-panel { border-radius:0 0 21px 21px; }
         }
         @media (max-width:900px) and (min-width:701px) {
           .workspace { grid-template-columns:minmax(0,3fr) minmax(300px,2fr);gap:12px; }
+          .tabs-row { width:calc((100% - 12px) * .6); }
         }
         @media (prefers-reduced-motion:reduce) {
           .conversation-tab.incoming::after { animation:none; }
@@ -485,7 +500,7 @@ export function AgentDesk() {
               <span className="context-pill"><Sparkles size={11} />Cliente recurrente</span>
               <span className="context-pill order"><Box size={11} />Pedido {activeChat.order}</span>
             </div>
-            <div className="messages">
+            <div className="messages" key={activeId}>
               {messages[activeId].map((message, index) => (
                 <div className={`message-line ${message.from}`} key={`${activeId}-${index}`}>
                   <div className="message-avatar">{message.from === "agent" ? "CT" : activeChat.initials}</div>
