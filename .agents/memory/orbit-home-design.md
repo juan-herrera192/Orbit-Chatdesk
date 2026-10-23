@@ -15,8 +15,8 @@ Conversation tabs must resemble Google Chrome tabs, including the active tab joi
 
 **How to apply:** Judge the rendered silhouette and its connection to the chat surface, not just whether the CSS gap is zero. Preserve the idle-color indicators and the new-chat green pulse.
 
-The user requested approximately 60% chat and 40% customer information, notes, and tracking, with separate main panels. The later request to adopt the Lark reference supersedes the earlier dark blue-to-purple treatment.
+The user requested approximately 60% chat and 40% customer information, notes, and tracking, with separate main panels. After exploring a light Lark reference, the user requested a darker design again.
 
 **Why:** These are explicit layout and appearance requirements.
 
-**How to apply:** Preserve these proportions and integrated tabs. Do not restore the earlier dark palette based on historical instructions; follow the latest reference direction unless the user changes it.
+**How to apply:** Preserve these proportions and integrated tabs. Follow the latest dark reference direction rather than treating the light Lark exploration as a standing requirement.

@@ -1,4 +1,4 @@
-/* Pastel glass control desk, inspired by the supplied Lark CRM reference.
+/* Glass control desk, with layout inherited from the Lark CRM exploration.
    Scoped to this preview so sibling mockups keep their own visual systems. */
 .orbit-desk.orbit-desk {
   --ink: #2c3d5b;
@@ -207,4 +207,131 @@
   .orbit-desk .brand { font-size: 18px; }
   .orbit-desk .top-actions { gap: 8px; }
   .orbit-desk .profile { padding-left: 8px; }
+}
+
+/* Midnight-blue glass — the current supplied reference.
+   Keep the browser silhouettes and 60/40 workspace, not dashboard widgets. */
+.orbit-desk.orbit-desk {
+  color-scheme: dark;
+  --ink: #e1eafa;
+  --muted: #91a7c8;
+  --line: rgba(140,173,219,.14);
+  --chrome-surface: #183b50;
+  --active-led: #66d8aa;
+  background:
+    radial-gradient(ellipse at 6% 0%,rgba(26,100,156,.26),transparent 46%),
+    radial-gradient(ellipse at 100% 100%,rgba(61,71,143,.23),transparent 50%),
+    linear-gradient(125deg,#0c203e,#0c1c38 58%,#122b4e);
+}
+.orbit-desk.orbit-desk[data-idle="warning"] { --chrome-surface:#363e48; --active-led:#e2bd69; }
+.orbit-desk.orbit-desk[data-idle="critical"] { --chrome-surface:#3c3048; --active-led:#e78d9b; }
+.orbit-desk .brand, .orbit-desk .profile-copy { color:#e1eafa; }
+.orbit-desk .brand-caption, .orbit-desk .profile-copy span { color:#8ba7cc; }
+.orbit-desk .brand-mark {
+  background:linear-gradient(140deg,#2b9cc9,#4874ba);
+  box-shadow:inset 0 1px rgba(201,232,255,.24),0 5px 16px rgba(3,15,37,.22);
+}
+.orbit-desk .kb-button {
+  color:#bfd3ef; background:rgba(50,88,139,.28);
+  border-color:rgba(138,181,237,.2); box-shadow:inset 0 1px rgba(174,207,248,.05);
+}
+.orbit-desk .kb-button:hover { background:rgba(60,102,159,.45); }
+.orbit-desk .avatar { color:#b9d2f6;background:#29496e;border-color:#3c5b80; }
+.orbit-desk .tabs-row {
+  background:rgba(24,47,84,.65);border-color:rgba(132,170,219,.17);
+  box-shadow:inset 0 1px rgba(178,207,245,.04);
+}
+.orbit-desk .tabs-row .conversation-tab { --tab-led:#66d8aa; }
+.orbit-desk .tabs-row .conversation-tab.edge-warning { --tab-led:#e2bd69; }
+.orbit-desk .tabs-row .conversation-tab.edge-critical { --tab-led:#e78d9b; }
+.orbit-desk .chrome-tab-fill { fill:rgba(44,70,112,.38); }
+.orbit-desk .conversation-tab:hover .chrome-tab-fill { fill:rgba(56,87,132,.5); }
+.orbit-desk .conversation-tab.selected .chrome-tab-fill { fill:var(--chrome-surface); }
+.orbit-desk .conversation-tab.incoming .chrome-tab-fill { fill:rgba(36,98,94,.28); }
+.orbit-desk .tab-name { color:#dce7fa; }
+.orbit-desk .tab-avatar { color:#c7c3f4;background:#41466d;border-color:rgba(186,188,243,.14); }
+.orbit-desk .idle { color:#8de2bc;background:rgba(53,134,106,.26); }
+.orbit-desk .idle.warning { color:#f1cf83;background:rgba(155,119,44,.22); }
+.orbit-desk .idle.critical { color:#f4a9b5;background:rgba(157,62,85,.25); }
+.orbit-desk .new-badge { color:#9fe2c6;background:rgba(49,141,109,.22);border-color:rgba(100,211,166,.16); }
+.orbit-desk .close-tab { color:#8ea5c4; }
+.orbit-desk .close-tab:hover { color:#d9e8fc;background:rgba(135,173,223,.15); }
+.orbit-desk .chat-panel,.orbit-desk .side-panel {
+  background:rgba(19,43,77,.86);border-color:rgba(141,176,222,.17);
+  box-shadow:0 20px 45px rgba(3,12,29,.22),inset 0 1px rgba(166,197,242,.05);
+}
+.orbit-desk .chat-panel { background:rgba(16,36,66,.94);box-shadow:0 20px 45px rgba(3,12,29,.22) !important; }
+.orbit-desk .chat-panel .chat-heading {
+  height:22px; min-height:22px;
+  background:linear-gradient(to bottom,var(--chrome-surface),transparent);
+}
+.orbit-desk .chat-context { align-items:center;gap:8px;padding:12px 25px 8px;min-height:58px; }
+.orbit-desk .resolve-button {
+  margin-left:auto;border-radius:999px;padding:9px 16px;
+  color:#c5d5ed;background:rgba(92,127,173,.13);
+  border:1px solid rgba(155,185,225,.24);font-size:11px;
+}
+.orbit-desk .resolve-button:hover { color:#f2b9c2;background:rgba(160,76,100,.16);border-color:rgba(223,140,159,.4); }
+.orbit-desk .context-pill { color:#c3b4e7;background:rgba(116,91,157,.2);border-color:rgba(176,149,218,.12); }
+.orbit-desk .context-pill.order { color:#9dbfe8;background:rgba(71,114,168,.2);border-color:rgba(126,168,219,.13); }
+.orbit-desk .bubble {
+  color:#e1d9f5;background:linear-gradient(125deg,rgba(123,99,167,.36),rgba(94,78,139,.29));
+  border-color:rgba(195,177,232,.19);
+  box-shadow:inset 0 1px rgba(221,211,247,.07),0 5px 16px rgba(3,12,29,.09);
+}
+.orbit-desk .message-line.agent .bubble {
+  color:#d2deef;background:linear-gradient(125deg,rgba(122,145,174,.22),rgba(86,110,145,.18));
+  border-color:rgba(165,187,217,.17);box-shadow:inset 0 1px rgba(205,221,245,.04);
+}
+.orbit-desk .message-avatar { color:#bfb0df;background:#3b385f; }
+.orbit-desk .message-line.agent .message-avatar { color:#a2c9e8;background:#294766; }
+.orbit-desk .message-time { color:#8299ba; }
+.orbit-desk .composer { background:rgba(31,57,93,.7);border-color:rgba(143,176,222,.18);box-shadow:inset 0 1px rgba(195,217,248,.04); }
+.orbit-desk .composer textarea { color:#d9e6f9; }
+.orbit-desk .composer textarea::placeholder { color:#7f98bb; }
+.orbit-desk .icon-button { color:#8eacd0; }
+.orbit-desk .icon-button:hover { color:#c1dcfa;background:#29496e;border-color:#35577f; }
+.orbit-desk .send-button { background:linear-gradient(145deg,#329ac7,#427fbd);box-shadow:none; }
+.orbit-desk .send-button:hover { background:#408eC0; }
+.orbit-desk .composer-hint { color:#6e88ac; }
+.orbit-desk .side-title,.orbit-desk .section-kicker,.orbit-desk .reason-label { color:#89a3c7; }
+.orbit-desk .order-chip { color:#a1bde0;background:#233e62;border-color:#304d73; }
+.orbit-desk .side-tabs,.orbit-desk .order-summary { border-color:rgba(140,173,219,.13); }
+.orbit-desk .side-tab { color:#91a6c4; }
+.orbit-desk .side-tab.active { color:#8ed2f0; }
+.orbit-desk .side-tab.active::after { background:#55b7da; }
+.orbit-desk .profile-card {
+  background:linear-gradient(135deg,rgba(40,70,110,.54),rgba(30,53,90,.5));
+  border-color:rgba(132,167,217,.15);box-shadow:inset 0 1px rgba(184,210,246,.04);
+}
+.orbit-desk .large-avatar { color:#cec6ee;background:linear-gradient(135deg,#4b466e,#3c4b74);border-color:rgba(187,186,233,.14); }
+.orbit-desk .customer-name { color:#e1eafa; }
+.orbit-desk .customer-tier,.orbit-desk .info-item label { color:#91a7c8; }
+.orbit-desk .info-item span { color:#c5d7ee; }
+.orbit-desk .reason-card { background:rgba(36,63,102,.4);border-color:rgba(139,174,222,.1); }
+.orbit-desk .reason-copy { color:#a9bdd8; }
+.orbit-desk .summary-status { color:#9fc8bf;background:rgba(41,102,94,.16); }
+.orbit-desk .summary-status i { background:#78b7a7; }
+.orbit-desk .summary-row { color:#8ca4c6; }
+.orbit-desk .summary-row strong { color:#b6cbe6; }
+.orbit-desk .field-label { color:#b3c8e4; }
+.orbit-desk .select-wrap select,.orbit-desk .notes-area,.orbit-desk .tracking-search {
+  color:#c4d5ed;background:rgba(15,34,62,.65);border-color:rgba(136,173,223,.2);
+}
+.orbit-desk .select-wrap select option { color:#d6e2f5;background:#172e50; }
+.orbit-desk .notes-area::placeholder,.orbit-desk .tracking-search::placeholder { color:#7f98b8; }
+.orbit-desk .select-wrap svg,.orbit-desk .search-wrap svg { color:#829dc1; }
+.orbit-desk .notes-area:focus,.orbit-desk .tracking-search:focus { border-color:#578cbf;box-shadow:0 0 0 3px rgba(74,135,192,.1); }
+.orbit-desk .save-note { color:#8ebbae; }
+.orbit-desk .tracking-intro,.orbit-desk .new-convo-note { color:#94aaca; }
+.orbit-desk .tracking-empty { background:rgba(19,40,70,.5);border-color:#3c577d; }
+.orbit-desk .empty-icon { color:#8bbcd9;background:#254466; }
+.orbit-desk .tracking-empty strong { color:#bbcee7; }
+.orbit-desk .tracking-empty p { color:#8fa7c8; }
+.orbit-desk .tracking-ref { color:#a9c2e3;background:#253f62; }
+.orbit-desk button:focus-visible { outline-color:#73bddd; }
+@media(max-width:767px) {
+  .orbit-desk .chat-context { padding:10px 14px;gap:6px;flex-wrap:wrap; }
+  .orbit-desk .context-pill { font-size:9px;padding:5px 7px; }
+  .orbit-desk .resolve-button { font-size:10px;padding:8px 11px; }
 }

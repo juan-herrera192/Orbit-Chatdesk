@@ -551,14 +551,11 @@ export function AgentDesk() {
 
         <main className="workspace">
           <section className="chat-panel" aria-label={`Conversación con ${activeChat.name}`}>
-            <div className="chat-heading">
-              <div className="chat-controls">
-                <button className="resolve-button" type="button" onClick={() => { setOpenIds((ids) => ids.filter((id) => id !== activeId)); const other = openIds.find((id) => id !== activeId); if (other) setActiveId(other); }}><X size={13} />End chat</button>
-              </div>
-            </div>
+            <div className="chat-heading" aria-hidden="true" />
             <div className="chat-context">
               <span className="context-pill"><Sparkles size={11} />Cliente recurrente</span>
               <span className="context-pill order"><Box size={11} />Pedido {activeChat.order}</span>
+              <button className="resolve-button" type="button" onClick={() => { setOpenIds((ids) => ids.filter((id) => id !== activeId)); const other = openIds.find((id) => id !== activeId); if (other) setActiveId(other); }}><X size={13} />End chat</button>
             </div>
             <div className="messages" key={activeId}>
               {messages[activeId].map((message, index) => (
