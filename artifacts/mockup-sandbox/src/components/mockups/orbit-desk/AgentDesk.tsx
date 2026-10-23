@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import {
   ArrowUpRight,
   BookOpen,
@@ -350,14 +350,23 @@ export function AgentDesk() {
         .orbit-desk { --chrome-surface:#2c3b43; --active-led:#74e9ad; }
         .orbit-desk[data-idle="warning"] { --chrome-surface:#413b38; --active-led:#ffd263; }
         .orbit-desk[data-idle="critical"] { --chrome-surface:#42313f; --active-led:#ff7482; }
-        .tabs-row { padding:8px 0 0;border-bottom:0;overflow:visible; }
+        .tabs-row {
+          --tab-width:294px;
+          --active-cut-start:calc(var(--active-tab-index) * (var(--tab-width) - 12px) + 12px);
+          --active-cut-end:calc(var(--active-cut-start) + var(--tab-width) - 24px);
+          padding:8px 0 0;border-bottom:0;overflow:visible;
+        }
         .tabs-row::after {
           content:"";position:absolute;left:0;right:0;bottom:-1px;height:1px;
-          background:var(--active-led);pointer-events:none;z-index:0;
-          box-shadow:0 0 5px var(--active-led),0 0 13px color-mix(in srgb,var(--active-led) 42%,transparent);
+          background:linear-gradient(to right,
+            var(--active-led) 0 var(--active-cut-start),
+            transparent var(--active-cut-start) var(--active-cut-end),
+            var(--active-led) var(--active-cut-end) 100%);
+          pointer-events:none;z-index:0;opacity:.64;
+          box-shadow:none;filter:drop-shadow(0 0 3px var(--active-led));
         }
         .tabs-row .conversation-tab {
-          height:48px;padding:7px 24px;isolation:isolate;
+          height:48px;padding:7px 24px;isolation:isolate;flex:0 0 var(--tab-width);
           border:0;border-radius:0;background:none;box-shadow:none;
           backdrop-filter:none;transform:none;
           --tab-led:#74e9ad;
@@ -370,7 +379,7 @@ export function AgentDesk() {
         .tabs-row .conversation-tab::before,
         .tabs-row .conversation-tab::after { content:none; }
         .tabs-row .conversation-tab.selected::before {
-          content:"";position:absolute;left:12px;right:12px;bottom:-5px;height:7px;
+          content:"";position:absolute;left:12px;right:12px;bottom:-2px;height:3px;
           background:var(--chrome-surface);pointer-events:none;z-index:0;
         }
         .chrome-tab-shape {
@@ -391,7 +400,8 @@ export function AgentDesk() {
         .chat-panel { border-top:0 !important;box-shadow:0 22px 54px rgba(8,5,20,.25) !important; }
         .chat-panel .chat-heading {
           height:44px;min-height:44px;padding:0 22px;justify-content:flex-end;
-          background:var(--chrome-surface);
+          border-bottom:0;
+          background:linear-gradient(to bottom,var(--chrome-surface) 0%,var(--chrome-surface) 45%,transparent 100%);
         }
         @media (prefers-reduced-motion:reduce) {
           .conversation-tab.incoming .chrome-tab-edge { animation:none;opacity:.85; }
@@ -420,7 +430,7 @@ export function AgentDesk() {
           box-shadow:0 22px 54px rgba(8,5,20,.25),inset 0 1px rgba(255,255,255,.13);
           backdrop-filter:blur(30px) saturate(155%);
         }
-        .chat-heading,.side-tabs { border-color:rgba(235,225,255,.13); }
+        .side-tabs { border-color:rgba(235,225,255,.13); }
         .customer-name { color:#f5f0ff; }
         .online { color:#c0b7d1; }
         .online i { background:#79e2a6;box-shadow:0 0 8px rgba(97,237,155,.58); }
@@ -477,7 +487,7 @@ export function AgentDesk() {
         .tracking-empty p { color:#c0b5d1; }
         .tracking-ref { color:#e1d8f0;background:rgba(255,255,255,.09); }
         @media (max-width:700px) {
-          .tabs-row { width:100%;gap:0; }
+          .tabs-row { --tab-width:max(190px,calc(50vw - 18px));width:100%;gap:0; }
           .conversation-tab { height:44px;border-radius:11px 11px 0 0; }
           .conversation-tab.incoming::after { border-radius:11px 11px 0 0; }
           .chat-panel { border-radius:0 0 21px 21px; }
@@ -507,7 +517,7 @@ export function AgentDesk() {
           </div>
         </header>
 
-        <nav className="tabs-row" aria-label="Conversaciones activas">
+        <nav className="tabs-row" aria-label="Conversaciones activas" style={{ "--active-tab-index": Math.max(0, openIds.indexOf(activeId)) } as CSSProperties}>
           {openIds.map((id) => {
             const chat = chats[id];
             const isActive = activeId === id;
