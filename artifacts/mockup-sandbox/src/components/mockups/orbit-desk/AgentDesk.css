@@ -1,0 +1,210 @@
+/* Pastel glass control desk, inspired by the supplied Lark CRM reference.
+   Scoped to this preview so sibling mockups keep their own visual systems. */
+.orbit-desk.orbit-desk {
+  --ink: #2c3d5b;
+  --muted: #6e809d;
+  --line: rgba(111, 141, 190, .17);
+  --chrome-surface: #f0faf7;
+  --active-led: #4caf85;
+  color: var(--ink);
+  padding: 25px 30px 28px;
+  background:
+    radial-gradient(ellipse at 4% 0%, rgba(220, 244, 255, .9), transparent 49%),
+    radial-gradient(ellipse at 89% 89%, rgba(200, 190, 255, .55), transparent 47%),
+    linear-gradient(125deg, #b6ddfa 0%, #a6ccff 51%, #8eb7fb 100%);
+}
+.orbit-desk.orbit-desk[data-idle="warning"] {
+  --chrome-surface: #fff9ec;
+  --active-led: #dca838;
+}
+.orbit-desk.orbit-desk[data-idle="critical"] {
+  --chrome-surface: #fff0f1;
+  --active-led: #d6747d;
+}
+.orbit-desk .orbit-shell { min-height: calc(100dvh - 53px); }
+.orbit-desk .topbar { height: 65px; padding: 0 5px 20px; }
+.orbit-desk .brand { color: #273e64; font-size: 21px; gap: 12px; }
+.orbit-desk .brand-mark {
+  width: 39px; height: 39px; border-radius: 13px;
+  background: linear-gradient(140deg, #58b9e6, #7187ea 60%, #a69aee);
+  box-shadow: 0 6px 14px rgba(85, 127, 197, .2), inset 0 1px 0 rgba(255,255,255,.65);
+}
+.orbit-desk .brand-caption { color: #5878a2; font-size: 9px; letter-spacing: 1.6px; }
+.orbit-desk .kb-button {
+  background: rgba(250, 253, 255, .7); color: #42638f;
+  border: 1px solid rgba(255,255,255,.8); padding: 10px 14px;
+  box-shadow: 0 5px 16px rgba(87, 128, 194, .08), inset 0 1px rgba(255,255,255,.6);
+}
+.orbit-desk .kb-button:hover { background: rgba(250,253,255,.94); }
+.orbit-desk .profile { border-color: rgba(96,135,190,.22); }
+.orbit-desk .profile-copy { color: #30476b; font-size: 12px; }
+.orbit-desk .profile-copy span { color: #5779a3; font-size: 10px; }
+.orbit-desk .avatar {
+  background: rgba(242, 249, 255, .75); color: #6575bc;
+  border-color: rgba(255,255,255,.85); width: 36px; height: 36px;
+}
+.orbit-desk .tabs-row {
+  border-color: rgba(255,255,255,.65);
+  background: rgba(233,244,255,.32);
+  box-shadow: inset 0 1px rgba(255,255,255,.6);
+  border-radius: 17px 17px 0 0;
+}
+.orbit-desk .tabs-row::after { opacity: .43; filter: drop-shadow(0 0 2px var(--active-led)); }
+.orbit-desk .tabs-row .conversation-tab { --tab-led: #4caf85; }
+.orbit-desk .tabs-row .conversation-tab.edge-warning { --tab-led: #dca838; }
+.orbit-desk .tabs-row .conversation-tab.edge-critical { --tab-led: #d6747d; }
+.orbit-desk .chrome-tab-fill { fill: rgba(248,253,255,.27); }
+.orbit-desk .conversation-tab:hover .chrome-tab-fill { fill: rgba(248,253,255,.55); }
+.orbit-desk .conversation-tab.selected .chrome-tab-fill { fill: var(--chrome-surface); }
+.orbit-desk .conversation-tab.incoming .chrome-tab-fill { fill: rgba(226,255,241,.6); }
+.orbit-desk .chrome-tab-edge { opacity: .5; filter: drop-shadow(0 -1px 2px var(--tab-led)); }
+.orbit-desk .conversation-tab.selected .chrome-tab-edge { opacity: .72; }
+.orbit-desk .tab-name { color: #30486b; font-size: 12px; }
+.orbit-desk .tab-avatar {
+  background: rgba(225,223,252,.9); color: #7c72b0;
+  border: 1px solid rgba(255,255,255,.7);
+}
+.orbit-desk .idle { color: #29815c; background: rgba(211,243,226,.85); }
+.orbit-desk .idle.warning { color: #95681c; background: #faedc9; }
+.orbit-desk .idle.critical { color: #a64f5a; background: #fae0e3; }
+.orbit-desk .idle-dot { box-shadow: 0 0 0 3px rgba(82,189,132,.12); }
+.orbit-desk .new-badge {
+  color: #2f8b63; background: rgba(212,246,228,.8);
+  border: 1px solid rgba(130,207,168,.2);
+}
+.orbit-desk .close-tab { color: #8095ad; }
+.orbit-desk .close-tab:hover { background: rgba(120,151,192,.12); color: #49668c; }
+.orbit-desk .chat-panel,
+.orbit-desk .side-panel {
+  border: 1px solid rgba(255,255,255,.85);
+  background: rgba(248,252,255,.87);
+  backdrop-filter: blur(28px) saturate(130%);
+  box-shadow: 0 18px 45px rgba(66,106,176,.13), inset 0 1px rgba(255,255,255,.8);
+}
+.orbit-desk .chat-panel {
+  background: rgba(249,252,255,.93);
+  box-shadow: 0 18px 45px rgba(66,106,176,.13) !important;
+}
+.orbit-desk .chat-panel .chat-heading {
+  background: linear-gradient(to bottom, var(--chrome-surface), transparent);
+  height: 45px; min-height: 45px;
+}
+.orbit-desk .resolve-button {
+  background: rgba(250,253,255,.8); color: #64819a;
+  border-color: rgba(149,176,202,.25); padding: 8px 12px;
+}
+.orbit-desk .resolve-button:hover { color: #b26071; border-color: #e7c5ce; background: #fff4f6; }
+.orbit-desk .chat-context { padding-top: 9px; }
+.orbit-desk .context-pill {
+  color: #8a78b0; background: #eee9fb; border-color: #e5def4;
+  font-size: 10px;
+}
+.orbit-desk .context-pill.order { color: #628ab5; background: #e9f2fd; border-color: #dfeaf8; }
+.orbit-desk .messages { gap: 22px; padding-top: 26px; }
+.orbit-desk .message-avatar { color: #8c7eb3; background: #e9e2f8; }
+.orbit-desk .message-line.agent .message-avatar { color: #5b89ac; background: #e0eef9; }
+.orbit-desk .bubble {
+  color: #4e5473;
+  background: linear-gradient(125deg,rgba(241,233,255,.94),rgba(230,222,250,.82));
+  border: 1px solid rgba(255,255,255,.85); font-size: 13px; line-height: 1.7;
+  padding: 14px 16px;
+  box-shadow: 0 5px 14px rgba(120,112,175,.07), inset 0 1px rgba(255,255,255,.8);
+}
+.orbit-desk .message-line.agent .bubble {
+  color: #50647d;
+  background: linear-gradient(125deg,rgba(237,244,252,.94),rgba(229,238,248,.84));
+  border-color: rgba(255,255,255,.9);
+  box-shadow: 0 5px 14px rgba(100,133,172,.06), inset 0 1px rgba(255,255,255,.8);
+}
+.orbit-desk .message-time { color: #6b819e; font-size: 10px; margin-top: 7px; }
+.orbit-desk .composer {
+  background: rgba(250,253,255,.9); border-color: #dde7f5;
+  box-shadow: 0 7px 23px rgba(94,128,185,.07), inset 0 1px rgba(255,255,255,.8);
+}
+.orbit-desk .composer textarea { color: #3e587a; font-size: 13px; }
+.orbit-desk .composer textarea::placeholder { color: #899bb4; }
+.orbit-desk .icon-button { color: #8a9eb9; }
+.orbit-desk .icon-button:hover { color: #6585c6; background: #eaf1fd; border-color: #dce7fa; }
+.orbit-desk .send-button { background: linear-gradient(145deg,#7c99ef,#7585dc); box-shadow: 0 4px 12px rgba(109,132,215,.17); }
+.orbit-desk .send-button:hover { background: #6e82d5; }
+.orbit-desk .composer-hint { color: #8a9cb6; }
+.orbit-desk .side-top { padding: 22px 24px 17px; }
+.orbit-desk .side-title { color: #627fa6; font-size: 10px; }
+.orbit-desk .order-chip { color: #6b8cb3; background: #e8f1fc; border-color: #dbe8f8; }
+.orbit-desk .side-tabs { border-color: #dfe9f6; padding: 0 18px; }
+.orbit-desk .side-tab { color: #7e91ad; font-size: 11px; padding-top: 13px; padding-bottom: 14px; }
+.orbit-desk .side-tab.active { color: #7188ce; }
+.orbit-desk .side-tab.active::after { background: #8a9fe4; box-shadow: none; height: 3px; }
+.orbit-desk .side-content { padding: 25px 24px; }
+.orbit-desk .section-kicker { color: #8295b0; font-size: 10px; margin-bottom: 16px; letter-spacing: 1.3px; }
+.orbit-desk .profile-card {
+  padding: 21px; border-radius: 16px; margin-bottom: 22px;
+  background: linear-gradient(130deg,rgba(253,254,255,.9),rgba(241,247,255,.7));
+  border-color: rgba(197,215,241,.56);
+  box-shadow: 0 7px 22px rgba(99,133,185,.04), inset 0 1px rgba(255,255,255,.9);
+}
+.orbit-desk .large-avatar {
+  color: #8275b4; background: linear-gradient(135deg,#eee8fc,#e0e6ff);
+  border-color: rgba(255,255,255,.9);
+}
+.orbit-desk .customer-name { color: #3b5376; font-size: 15px; }
+.orbit-desk .customer-tier { color: #7186a3; font-size: 11px; }
+.orbit-desk .info-grid { gap: 16px 15px; }
+.orbit-desk .info-item label { color: #7186a3; font-size: 11px; margin-bottom: 5px; }
+.orbit-desk .info-item span { color: #536d91; font-size: 12px; }
+.orbit-desk .reason-card {
+  background: rgba(236,244,255,.65); border-color: #dee9f8;
+  border-radius: 13px; padding: 15px 17px;
+}
+.orbit-desk .reason-label { color: #8398b6; font-size: 10px; margin-bottom: 7px; }
+.orbit-desk .reason-copy { color: #5f789a; font-size: 12px; }
+.orbit-desk .summary-status {
+  background: rgba(235,246,244,.75); color: #7a9994; font-size: 11px; padding: 12px 14px;
+}
+.orbit-desk .summary-status i { background: #8fc2b4; }
+.orbit-desk .order-summary { border-color: #e0eaf7; margin-top: 7px; }
+.orbit-desk .summary-row { color: #8195b1; font-size: 11px; margin-bottom: 12px; }
+.orbit-desk .summary-row strong { color: #637fa5; }
+.orbit-desk .field-label { color: #6983a8; font-size: 12px; }
+.orbit-desk .select-wrap select,
+.orbit-desk .notes-area,
+.orbit-desk .tracking-search {
+  color: #536d91; background: rgba(252,254,255,.85);
+  border-color: #dce7f7; font-size: 12px;
+}
+.orbit-desk .select-wrap select option { background: #f4f8ff; color: #536d91; }
+.orbit-desk .notes-area::placeholder,
+.orbit-desk .tracking-search::placeholder { color: #8da0bb; }
+.orbit-desk .select-wrap svg,
+.orbit-desk .search-wrap svg { color: #91a6c3; }
+.orbit-desk .notes-area:focus,
+.orbit-desk .tracking-search:focus { border-color: #a0b5eb; box-shadow: 0 0 0 3px rgba(130,158,225,.1); }
+.orbit-desk .save-note { color: #7da192; font-size: 10px; }
+.orbit-desk .tracking-intro,
+.orbit-desk .new-convo-note { color: #8499b5; font-size: 12px; }
+.orbit-desk .tracking-empty { background: rgba(247,251,255,.78); border-color: #ccddf3; padding: 27px 18px; }
+.orbit-desk .empty-icon { color: #91a4db; background: #e8edff; }
+.orbit-desk .tracking-empty strong { color: #6983a7; font-size: 13px; }
+.orbit-desk .tracking-empty p { color: #8b9fba; font-size: 12px; }
+.orbit-desk .tracking-ref { color: #7894b8; background: #e9f2fc; }
+.orbit-desk button:focus-visible { outline: 3px solid #94a5e6; outline-offset: 3px; }
+@media (max-width: 767px) {
+  .orbit-desk.orbit-desk { padding: 16px 14px; }
+  .orbit-desk .orbit-shell { min-height: calc(100dvh - 32px); }
+  .orbit-desk .brand-caption, .orbit-desk .profile-copy, .orbit-desk .kb-button span { display:none; }
+  .orbit-desk .tabs-row { width: 100%; --tab-width: max(180px, calc(50vw - 16px)); }
+  .orbit-desk .tabs-row .conversation-tab { padding: 7px 16px; gap: 6px; }
+  .orbit-desk .tabs-row .tab-avatar { display: none; }
+  .orbit-desk .tab-name { display: block; font-size: 11px; }
+  .orbit-desk .idle { font-size: 9px; padding: 4px; gap: 3px; }
+  .orbit-desk .idle-dot { width: 5px; height: 5px; }
+  .orbit-desk .close-tab { padding: 2px; }
+  .orbit-desk .workspace { display:flex; flex-direction:column; gap:18px; }
+  .orbit-desk .chat-panel { min-height: 590px; }
+  .orbit-desk .message-line { max-width: 93%; }
+  .orbit-desk .side-content { padding: 20px; }
+  .orbit-desk .messages { padding-left: 14px; padding-right:14px; }
+  .orbit-desk .brand { font-size: 18px; }
+  .orbit-desk .top-actions { gap: 8px; }
+  .orbit-desk .profile { padding-left: 8px; }
+}
