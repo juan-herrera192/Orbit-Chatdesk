@@ -369,6 +369,10 @@ export function AgentDesk() {
         .tabs-row .conversation-tab.edge-critical { --tab-led:#ff7482; }
         .tabs-row .conversation-tab::before,
         .tabs-row .conversation-tab::after { content:none; }
+        .tabs-row .conversation-tab.selected::before {
+          content:"";position:absolute;left:12px;right:12px;bottom:-5px;height:7px;
+          background:var(--chrome-surface);pointer-events:none;z-index:0;
+        }
         .chrome-tab-shape {
           position:absolute;inset:0 0 -1px;width:100%;height:calc(100% + 1px);
           overflow:visible;z-index:-1;pointer-events:none;
@@ -384,7 +388,7 @@ export function AgentDesk() {
         .conversation-tab.selected .chrome-tab-edge { opacity:.85; }
         .conversation-tab.incoming .chrome-tab-fill { fill:rgba(57,151,112,.14); }
         .conversation-tab.incoming .chrome-tab-edge { animation:incomingPulse 1.8s ease-in-out infinite; }
-        .chat-panel { border-top:0 !important; }
+        .chat-panel { border-top:0 !important;box-shadow:0 22px 54px rgba(8,5,20,.25) !important; }
         .chat-panel .chat-heading {
           height:44px;min-height:44px;padding:0 22px;justify-content:flex-end;
           background:var(--chrome-surface);
