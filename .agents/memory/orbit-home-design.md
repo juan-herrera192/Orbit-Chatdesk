@@ -17,11 +17,11 @@ The user now wants only the left conversation list, without top browser tabs or 
 
 The latest reference request supersedes the earlier 60/40 split: left navigation, a wide chat area, and a narrower customer panel. The user returned to a darker design after exploring a light Lark reference.
 
-The user explicitly dropped the glass treatment: “ya no lo hagamos glass”, requesting the reference colors and aqua messages.
+The user explicitly dropped the glass treatment: “ya no lo hagamos glass”. Aqua messages were requested earlier, but the latest palette exploration is not constrained to aqua.
 
 **Why:** This supersedes the earlier translucent lilac/gray visual direction.
 
-**How to apply:** Keep surfaces solid and opaque; do not reintroduce glass blur or translucent bubbles based on older requests.
+**How to apply:** Keep surfaces solid and opaque; do not reintroduce glass blur or translucent bubbles based on older requests. Treat new palette requests as explorations until the user confirms a lasting choice.
 
 **Why:** These are explicit layout and appearance requirements.
 
